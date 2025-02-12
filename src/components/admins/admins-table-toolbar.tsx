@@ -4,7 +4,8 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import AdminCreateForm from "./admin-create-form";
+import Link from "next/link";
+import { PlusCircle } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -40,7 +41,12 @@ export function AdminsTableToolbar<TData>({
         )}
       </div>
       <div className="flex space-x-4">
-        <AdminCreateForm />
+        <Button size="sm" className="h-8 flex" asChild>
+          <Link href="/admins/create">
+            <PlusCircle className="flex sm:hidden h-4 w-4" />
+            <span className="hidden sm:flex">Nuevo Administrador</span>
+          </Link>
+        </Button>
       </div>
     </div>
   );

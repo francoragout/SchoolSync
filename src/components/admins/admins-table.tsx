@@ -25,8 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { useDispatch, useSelector } from "react-redux";
-import { setPathname } from "@/lib/features/pathname/pathnameSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 import { AdminsTableToolbar } from "./admins-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -68,10 +68,10 @@ export function AdminsTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    dispatch(setPathname("Administración/Administradores"));
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+  // React.useEffect(() => {
+  //   dispatch(setPathname("Administración/Administradores"));
+  // }, [dispatch]);
 
   return (
     <div className="space-y-4">

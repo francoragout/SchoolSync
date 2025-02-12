@@ -1,3 +1,5 @@
+import AdminCreateForm from "@/components/admins/admin-create-form";
+
 export default function CreateAdminPage() {
-    return <div>Create Admin Page</div>;
+  return <AdminCreateForm />;
 }

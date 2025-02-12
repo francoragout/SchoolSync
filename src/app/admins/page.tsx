@@ -1,5 +1,5 @@
-import { UsersColumns } from "@/components/users/users-columns";
-import { UsersTable } from "@/components/users/users-table";
+import { AdminsColumns } from "@/components/admins/admins-columns";
+import { AdminsTable } from "@/components/admins/admins-table";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
@@ -25,5 +25,5 @@ async function GetAdmins(): Promise<User[]> {
 
 export default async function AdminsPage() {
   const data = await GetAdmins();
-  return <UsersTable columns={UsersColumns} data={data} />;
+  return <AdminsTable columns={AdminsColumns} data={data} />;
 }

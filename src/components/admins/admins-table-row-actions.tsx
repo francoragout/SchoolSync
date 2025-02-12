@@ -22,10 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { UserSchema } from "@/lib/zod";
 import { MoreHorizontal, Trash } from "lucide-react";
-import { toast } from "sonner";
-import { useSession } from "next-auth/react";
-import AdminEditForm from "./admin-edit-form";
-import { DeleteAdmin } from "@/actions/admin";
+// import { toast } from "sonner";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -35,16 +32,9 @@ export function AdminTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const admin = UserSchema.parse(row.original);
-  const { data: session } = useSession();
 
   const handleDelete = async () => {
-    DeleteAdmin(admin.id ?? "").then((response) => {
-      if (response.success) {
-        toast.success(response.message);
-      } else {
-        toast.error(response.message);
-      }
-    });
+    
   };
 
   return (
@@ -59,14 +49,13 @@ export function AdminTableRowActions<TData>({
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col">
-          <AdminEditForm admin={admin} />
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
                 className="flex justify-start pl-2 w-full"
-                disabled={session?.user?.role !== "ADMIN"}
+                
               >
                 <Trash className="mr-2 h-4 w-4" />
                 Eliminar

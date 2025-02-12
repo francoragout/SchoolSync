@@ -16,6 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,9 +54,8 @@ export default function RootLayout({
                 </Breadcrumb>
               </div>
             </header>
-            <div className="px-3 py-3">
-              {children}
-            </div>
+            <div className="px-3 py-3">{children}</div>
+            <Toaster />
           </SidebarInset>
           <SidebarRight />
         </SidebarProvider>
