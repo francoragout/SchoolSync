@@ -21,8 +21,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { UserSchema } from "@/lib/zod";
-import { MoreHorizontal, Trash } from "lucide-react";
-// import { toast } from "sonner";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import Link from "next/link";
+import { DeleteUser } from "@/actions/user";
+import { toast } from "sonner";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -31,10 +33,16 @@ interface DataTableRowActionsProps<TData> {
 export function AdminTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const admin = UserSchema.parse(row.original);
+  const user = UserSchema.parse(row.original);
 
   const handleDelete = async () => {
-    
+    DeleteUser(user.id ?? "").then((response) => {
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   return (
@@ -49,13 +57,23 @@ export function AdminTableRowActions<TData>({
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col">
+          <Button
+            asChild
+            variant="ghost"
+            className="flex justify-start pl-2"
+            size="sm"
+          >
+            <Link href={`/admins/${user.id}/update`}>
+              <Pencil className="mr-2 h-4 w-4" />
+              <span>Editar</span>
+            </Link>
+          </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
                 className="flex justify-start pl-2 w-full"
-                
               >
                 <Trash className="mr-2 h-4 w-4" />
                 Eliminar
@@ -72,7 +90,7 @@ export function AdminTableRowActions<TData>({
                   {
                     <span className="text-primary">
                       {" "}
-                      &apos;{admin.firstName} {admin.lastName}&apos;
+                      &apos;{user.firstName} {user.lastName}&apos;
                     </span>
                   }{" "}
                   y todos los datos asociados de nuestros servidores.
