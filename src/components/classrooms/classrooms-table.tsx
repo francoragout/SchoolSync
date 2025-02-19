@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,7 +14,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -23,27 +23,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { DataTablePagination } from "../data-table-pagination"
-import { UsersTableToolbar } from "./users-table-toolbar"
-
+} from "@/components/ui/table";
+import { DataTablePagination } from "@/components/data-table-pagination";
+import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
+// import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
-export function UsersTable<TData, TValue>({
+export function ClassroomsTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -65,11 +67,16 @@ export function UsersTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
+
+  // const dispatch = useDispatch();
+  // React.useEffect(() => {
+  //   dispatch(setPathname("Administración/Administradores"));
+  // }, [dispatch]);
 
   return (
     <div className="space-y-4">
-      <UsersTableToolbar table={table} />
+      <ClassroomsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -85,7 +92,7 @@ export function UsersTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -113,7 +120,7 @@ export function UsersTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Sin resultados.
                 </TableCell>
               </TableRow>
             )}
@@ -122,5 +129,5 @@ export function UsersTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
     </div>
-  )
+  );
 }

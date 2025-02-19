@@ -13,7 +13,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function AdminsTableToolbar<TData>({
+export function PreceptorsTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -74,7 +74,7 @@ export function AdminsTableToolbar<TData>({
           </Button>
         )}
         <Button size="sm" className="h-8 flex" asChild>
-          <Link href="/admins/create">
+          <Link href="/preceptors/create">
             <PlusCircle className="flex sm:hidden h-4 w-4" />
             <span className="hidden sm:flex">Agregar</span>
           </Link>

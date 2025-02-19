@@ -29,7 +29,7 @@ import { useRouter } from "next/navigation";
 
 type User = z.infer<typeof UserSchema>;
 
-export default function AdminUpdateForm({ user }: { user: User }) {
+export default function PreceptorUpdateForm({ user }: { user: User }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -40,7 +40,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
       lastName: user.lastName,
       email: user.email,
       phone: user.phone,
-      role: "ADMIN",
+      role: "PRECEPTOR",
     },
   });
 
@@ -50,7 +50,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push("/admins");
+          router.push("/preceptors");
         } else {
           toast.error(response.message);
         }
@@ -61,7 +61,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Editar Administrador</CardTitle>
+        <CardTitle>Editar Preceptor</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -155,7 +155,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/admins">Cancelar</Link>
+                <Link href="/preceptors">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

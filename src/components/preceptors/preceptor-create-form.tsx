@@ -23,34 +23,32 @@ import {
 import { toast } from "sonner";
 import { UserSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
-import { UpdateUser } from "@/actions/user";
+import { CreateUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type User = z.infer<typeof UserSchema>;
-
-export default function AdminUpdateForm({ user }: { user: User }) {
+export default function PreceptorCreateForm() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      role: "ADMIN",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      role: "PRECEPTOR",
     },
   });
 
   function onSubmit(values: z.infer<typeof UserSchema>) {
     startTransition(() => {
-      UpdateUser(values, user.id ?? "").then((response) => {
+      CreateUser(values).then((response) => {
         if (response.success) {
           toast.success(response.message);
-          form.reset(values);
-          router.push("/admins");
+          form.reset();
+          router.push("/preceptors");
         } else {
           toast.error(response.message);
         }
@@ -61,7 +59,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Editar Administrador</CardTitle>
+        <CardTitle>Crear Preceptor</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -139,7 +137,6 @@ export default function AdminUpdateForm({ user }: { user: User }) {
                         {...field}
                         disabled={isPending}
                         type="tel"
-                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />
@@ -155,7 +152,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/admins">Cancelar</Link>
+                <Link href="/preceptors">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

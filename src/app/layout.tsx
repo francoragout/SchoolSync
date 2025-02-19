@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-
 import { SidebarLeft } from "@/components/sidebar-left";
 import { SidebarRight } from "@/components/sidebar-right";
 import {
@@ -38,7 +37,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <SidebarProvider>
           <SidebarLeft />
-          <SidebarInset>
+          <SidebarInset className="overflow-x-auto">
             <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
               <div className="flex flex-1 items-center gap-2 px-3">
                 <SidebarTrigger />
@@ -54,7 +53,9 @@ export default function RootLayout({
                 </Breadcrumb>
               </div>
             </header>
-            <div className="px-3 py-3">{children}</div>
+            <div className="gap-4 p-4">
+              {children}
+            </div>
             <Toaster />
           </SidebarInset>
           <SidebarRight />

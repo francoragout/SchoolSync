@@ -1,9 +1,10 @@
 "use server";
 
 import { UserSchema } from "@/lib/zod";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const URL = process.env.API_URL;
+const URL = process.env.API_URL
 
 export async function CreateUser(values: z.infer<typeof UserSchema>) {
   try {
@@ -19,6 +20,8 @@ export async function CreateUser(values: z.infer<typeof UserSchema>) {
       const errorText = await response.text();
       throw new Error(`Failed to create user: ${errorText}`);
     }
+
+    revalidatePath("/");
 
     return {
       success: true,
@@ -51,6 +54,8 @@ export async function UpdateUser(
       throw new Error(`Failed to update user: ${errorText}`);
     }
 
+    revalidatePath("/");
+
     return {
       success: true,
       message: "Usuario actualizado exitosamente",
@@ -74,6 +79,8 @@ export async function DeleteUser(id: string) {
       const errorText = await response.text();
       throw new Error(`Failed to delete user: ${errorText}`);
     }
+
+    revalidatePath("/");
 
     return {
       success: true,
@@ -102,6 +109,8 @@ export async function DeleteUsers(ids: string[]) {
       const errorText = await response.text();
       throw new Error(`Failed to delete users: ${errorText}`);
     }
+
+    revalidatePath("/");
 
     return {
       success: true,

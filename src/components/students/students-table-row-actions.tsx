@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Trash } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,16 +21,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { UserSchema } from "@/lib/zod";
+import { StudentSchema } from "@/lib/zod";
+import Link from "next/link";
+import { Calendar, Trash, Users } from "lucide-react";
+// import { toast } from "sonner";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
-export function UsersTableRowActions<TData>({
+export function StudentsTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const user = UserSchema.parse(row.original);
+  const student = StudentSchema.parse(row.original);
+
+  const handleDelete = async () => {
+    // DeleteStudent(student.id ?? "", student.classroomId ?? "").then((response) => {
+    //   if (response.success) {
+    //     toast.success(response.message);
+    //   } else {
+    //     toast.error(response.message);
+    //   }
+    // });
+  };
 
   return (
     <DropdownMenu>
@@ -48,6 +60,34 @@ export function UsersTableRowActions<TData>({
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col">
+          <Button
+            asChild
+            variant="ghost"
+            className="flex justify-start pl-2"
+            size="sm"
+          >
+            <Link
+              href={`/administration/classrooms/${student.classroomId}/students/${student.id}/attendance`}
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              <span>Asistencia</span>
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            className="flex justify-start pl-2"
+            size="sm"
+          >
+            <Link
+              href={`/administration/classrooms/${student.classroomId}/students/${student.id}/tutors`}
+            >
+              <Users className="mr-2 h-4 w-4" />
+              <span>Tutores</span>
+            </Link>
+          </Button>
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
@@ -66,11 +106,11 @@ export function UsersTableRowActions<TData>({
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   Esta acción no se puede deshacer. Esto eliminará
-                  permanentemente el usuario{" "}
+                  permanentemente al alumno:
                   {
                     <span className="text-primary">
                       {" "}
-                      &apos;{user.firstName} {user.lastName}&apos;
+                      &apos;{student.firstName} {student.lastName}&apos;
                     </span>
                   }{" "}
                   y todos los datos asociados de nuestros servidores.
@@ -78,7 +118,9 @@ export function UsersTableRowActions<TData>({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction>Continuar</AlertDialogAction>
+                <AlertDialogAction onClick={handleDelete}>
+                  Continuar
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

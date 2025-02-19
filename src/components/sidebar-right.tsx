@@ -12,7 +12,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 
@@ -51,7 +50,7 @@ export function SidebarRight({
       <SidebarHeader className="h-16 border-b border-sidebar-border">
         <NavUser user={data.user} />
       </SidebarHeader>
-      <SidebarContent>
+      {/* <SidebarContent>
         <DatePicker />
         <SidebarSeparator className="mx-0" />
         <Calendars calendars={data.calendars} />
@@ -65,7 +64,7 @@ export function SidebarRight({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   )
 }

@@ -1,9 +1,8 @@
-import { PreceptorsColumns } from "@/components/preceptors/preceptors-columns";
-import { PreceptorsTable } from "@/components/preceptors/preceptors-table";
+import ClassroomCreateForm from "@/components/classrooms/classroom-create-form";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
-const URL = process.env.API_URL || "http://localhost:5000";
+const URL = process.env.API_URL;
 
 type User = z.infer<typeof UserSchema>;
 
@@ -25,7 +24,7 @@ async function GetPreceptors(): Promise<User[]> {
   );
 }
 
-export default async function PreceptorsPage() {
-  const data = await GetPreceptors();
-  return <PreceptorsTable columns={PreceptorsColumns} data={data} />;
+export default async function CreateClassroomPage() {
+  const preceptors = await GetPreceptors();
+  return <ClassroomCreateForm preceptors={preceptors} />;
 }

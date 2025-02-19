@@ -22,7 +22,6 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -36,30 +35,14 @@ const data = {
           title: "Preceptores",
           url: "/preceptors",
         },
-        {
-          title: "Profesores",
-          url: "/professors",
-        },
-        {
-          title: "Tutores",
-          url: "/tutors",
-        },
       ],
     },
     {
       title: "Institución",
       items: [
         {
-          title: "Asignaturas",
-          url: "#",
-        },
-        {
-          title: "Asistencias",
-          url: "#",
-        },
-        {
           title: "Aulas",
-          url: "#",
+          url: "/classrooms",
         },
       ],
     }
