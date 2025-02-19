@@ -21,34 +21,33 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { UserSchema } from "@/lib/zod";
+import { StudentSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
-import { CreateUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { UpdateStudent } from "@/actions/student";
 
-export default function AdminCreateForm() {
+type Student = z.infer<typeof StudentSchema>;
+
+export default function StudentUpdateForm({ student }: { student: Student }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof UserSchema>>({
-    resolver: zodResolver(UserSchema),
+  const form = useForm<z.infer<typeof StudentSchema>>({
+    resolver: zodResolver(StudentSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      role: "ADMIN",
+      firstName: student.firstName,
+      lastName: student.lastName,
     },
   });
 
-  function onSubmit(values: z.infer<typeof UserSchema>) {
+  function onSubmit(values: z.infer<typeof StudentSchema>) {
     startTransition(() => {
-      CreateUser(values).then((response) => {
+      UpdateStudent(values, student.id ?? "").then((response) => {
         if (response.success) {
           toast.success(response.message);
-          form.reset();
-          router.push("/admins");
+          form.reset(values);
+          router.push(`/classrooms/${student.classroomId}/students`);
         } else {
           toast.error(response.message);
         }
@@ -59,7 +58,7 @@ export default function AdminCreateForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Crear Administrador</CardTitle>
+        <CardTitle>Crear Alumno</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -106,44 +105,6 @@ export default function AdminCreateForm() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Email (requerido)"
-                        {...field}
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Teléfono</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Teléfono (opcional)"
-                        {...field}
-                        disabled={isPending}
-                        type="tel"
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <div className="flex justify-end space-x-4 mt-8">
               <Button
@@ -153,7 +114,9 @@ export default function AdminCreateForm() {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/admins">Cancelar</Link>
+                <Link href={`/classrooms/${student.classroomId}/students`}>
+                  Cancelar
+                </Link>
               </Button>
               <Button
                 type="submit"

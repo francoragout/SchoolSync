@@ -27,8 +27,6 @@ export async function CreateClassroom(values: z.infer<typeof ClassroomSchema>) {
       throw new Error(`Failed to create classroom: ${errorText}`);
     }
 
-    revalidatePath("/classrooms");
-
     return {
       success: true,
       message: "Aula creada exitosamente",
@@ -64,8 +62,6 @@ export async function UpdateClassroom(
       const errorText = await response.text();
       throw new Error(`Failed to update classroom: ${errorText}`);
     }
-
-    revalidatePath("/classrooms");
 
     return {
       success: true,

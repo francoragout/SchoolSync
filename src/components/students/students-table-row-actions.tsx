@@ -24,7 +24,8 @@ import {
 import { StudentSchema } from "@/lib/zod";
 import Link from "next/link";
 import { Calendar, Trash, Users } from "lucide-react";
-// import { toast } from "sonner";
+import { toast } from "sonner";
+import { DeleteStudent } from "@/actions/student";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -34,15 +35,14 @@ export function StudentsTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const student = StudentSchema.parse(row.original);
-
   const handleDelete = async () => {
-    // DeleteStudent(student.id ?? "", student.classroomId ?? "").then((response) => {
-    //   if (response.success) {
-    //     toast.success(response.message);
-    //   } else {
-    //     toast.error(response.message);
-    //   }
-    // });
+    DeleteStudent(student.id ?? "", student.classroomId ?? "").then((response) => {
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   return (
@@ -74,6 +74,8 @@ export function StudentsTableRowActions<TData>({
             </Link>
           </Button>
 
+          <DropdownMenuSeparator />
+
           <Button
             asChild
             variant="ghost"
@@ -81,10 +83,10 @@ export function StudentsTableRowActions<TData>({
             size="sm"
           >
             <Link
-              href={`/administration/classrooms/${student.classroomId}/students/${student.id}/tutors`}
+              href={`/classrooms/${student.classroomId}/students/${student.id}/update`}
             >
               <Users className="mr-2 h-4 w-4" />
-              <span>Tutores</span>
+              <span>Editar</span>
             </Link>
           </Button>
 

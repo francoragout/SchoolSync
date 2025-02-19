@@ -4,8 +4,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CalendarX2, ClockAlert } from "lucide-react";
-import { z } from "zod";
+import { CalendarX2, ClockAlert, PlusCircle } from "lucide-react";
 // import { toast } from "sonner";
 import {
   AlertDialog,
@@ -18,17 +17,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ClassroomSchema } from "@/lib/zod";
 import { Separator } from "../ui/separator";
+import Link from "next/link";
 
-type Classroom = z.infer<typeof ClassroomSchema>;
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  classroom: Classroom;
+  classroomId: string;
 }
 
 export function StudentsTableToolbar<TData>({
   table,
+  classroomId,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const isSomeRowsSelected =
@@ -185,6 +184,12 @@ export function StudentsTableToolbar<TData>({
         )}
       </div>
       <div className="flex">
+        <Button size="sm" className="h-8 flex" asChild>
+          <Link href={`/classrooms/${classroomId}/students/create`}>
+            <PlusCircle className="flex sm:hidden h-4 w-4" />
+            <span className="hidden sm:flex">Agregar</span>
+          </Link>
+        </Button>
       </div>
     </div>
   );

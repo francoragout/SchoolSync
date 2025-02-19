@@ -26,6 +26,9 @@ import {
 } from "@/components/ui/table";
 
 import { DataTablePagination } from "@/components/data-table-pagination";
+import { StudentsTableToolbar } from "./students-table-toolbar";
+import { z } from "zod";
+import { ClassroomSchema } from "@/lib/zod";
 // import { useDispatch } from "react-redux";
 // import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 // import { z } from "zod";
@@ -33,18 +36,18 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 // import { ClassroomSchema } from "@/lib/zod";
 // import { StudentsTableToolbar } from "./students-table-toolbar";
 
-// type Classroom = z.infer<typeof ClassroomSchema>;
+type Classroom = z.infer<typeof ClassroomSchema>;
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  // classroom: Classroom;
+  classroom: Classroom;
 }
 
 export function StudentsTable<TData, TValue>({
   columns,
   data,
-  // classroom,
+  classroom,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -81,21 +84,21 @@ export function StudentsTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-//   const classroomName =
-//     grades.find((g) => g.value === classroom.grade)?.label +
-//     " " +
-//     divisions.find((d) => d.value === classroom.division)?.label +
-//     " " +
-//     shifts.find((s) => s.value === classroom.shift)?.label;
+  //   const classroomName =
+  //     grades.find((g) => g.value === classroom.grade)?.label +
+  //     " " +
+  //     divisions.find((d) => d.value === classroom.division)?.label +
+  //     " " +
+  //     shifts.find((s) => s.value === classroom.shift)?.label;
 
-//   const dispatch = useDispatch();
-//   React.useEffect(() => {
-//     dispatch(setPathname(`/Administración/Aulas/${classroomName}/Alumnos`));
-//   }, [dispatch, classroomName]);
+  //   const dispatch = useDispatch();
+  //   React.useEffect(() => {
+  //     dispatch(setPathname(`/Administración/Aulas/${classroomName}/Alumnos`));
+  //   }, [dispatch, classroomName]);
 
   return (
     <div className="space-y-4">
-      {/* <StudentsTableToolbar table={table} classroom={classroom}/> */}
+      <StudentsTableToolbar table={table} classroomId={classroom.id ?? ""} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

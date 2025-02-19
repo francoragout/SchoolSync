@@ -21,8 +21,6 @@ export async function CreateUser(values: z.infer<typeof UserSchema>) {
       throw new Error(`Failed to create user: ${errorText}`);
     }
 
-    revalidatePath("/");
-
     return {
       success: true,
       message: "Usuario creado exitosamente",
@@ -53,8 +51,6 @@ export async function UpdateUser(
       const errorText = await response.text();
       throw new Error(`Failed to update user: ${errorText}`);
     }
-
-    revalidatePath("/");
 
     return {
       success: true,

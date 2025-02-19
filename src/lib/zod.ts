@@ -71,4 +71,5 @@ export const StudentSchema = z.object({
     }),
   image: z.string().nullish(),
   classroomId: z.string().optional(),
+  classroom: ClassroomSchema.nullish(),
 });
