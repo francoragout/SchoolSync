@@ -67,7 +67,7 @@ export function StudentsTableRowActions<TData>({
             size="sm"
           >
             <Link
-              href={`/administration/classrooms/${student.classroomId}/students/${student.id}/attendance`}
+              href={`/classrooms/${student.classroomId}/students/${student.id}/attendance`}
             >
               <Calendar className="mr-2 h-4 w-4" />
               <span>Asistencia</span>

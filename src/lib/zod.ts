@@ -37,6 +37,10 @@ const Shift = z.enum(["MORNING", "AFTERNOON"], {
   message: "Seleccionar un turno",
 });
 
+const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
+  message: "Seleccionar un estado",
+});
+
 export const ClassroomSchema = z.object({
   id: z.string().optional(),
   grade: Grade,
@@ -73,3 +77,18 @@ export const StudentSchema = z.object({
   classroomId: z.string().optional(),
   classroom: ClassroomSchema.nullish(),
 });
+
+export const AttendanceSchema = z.object({
+  id: z.string().optional(),
+  studentId: z.string(),
+  student: StudentSchema.optional(),
+  status: Status,
+  createdAt: z.date(),
+});
+
+export const AttendancesSchema = z.object({
+  ids: z.array(z.string()),
+  status: Status,
+});
+
+

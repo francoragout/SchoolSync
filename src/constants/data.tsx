@@ -7,6 +7,10 @@ export const statuses = [
       value: "LATE",
       label: "Tarde",
     },
+    {
+      value: "JUSTIFIED",
+      label: "Justificado",
+    }
   ];
   
   export const divisions = [

@@ -3,7 +3,7 @@ import { AdminsTable } from "@/components/admins/admins-table";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
-const URL = process.env.API_URL || "http://localhost:5000";
+const URL = process.env.API_URL
 
 type User = z.infer<typeof UserSchema>;
 
