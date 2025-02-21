@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -26,17 +25,26 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { AttendanceTableToolbar } from "./attendance-table-toolbar";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
+import { ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { z } from "zod";
+import { divisions, grades, shifts } from "@/constants/data";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
+type Classroom = z.infer<typeof ClassroomSchema>;
+type Student = z.infer<typeof StudentSchema>;
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  classroom: Classroom;
+  student: Student;
 }
 
 export function AttendanceTable<TData, TValue>({
   columns,
   data,
+  classroom,
+  student,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -44,7 +52,10 @@ export function AttendanceTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([{
+    id: "date",
+    desc: true,
+  }]);
 
   const table = useReactTable({
     data,
@@ -68,14 +79,29 @@ export function AttendanceTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(setPathname("Administración/Administradores"));
-  // }, [dispatch]);
+  const classroomName =
+    grades.find((g) => g.value === classroom.grade)?.label +
+    " " +
+    divisions.find((d) => d.value === classroom.division)?.label +
+    " " +
+    shifts.find((s) => s.value === classroom.shift)?.label;
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(
+      setBreadcrumb(
+        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia`
+      )
+    );
+  }, [dispatch, classroomName, student.firstName, student.lastName]);
 
   return (
     <div className="space-y-4">
-      <AttendanceTableToolbar table={table} />
+      <AttendanceTableToolbar
+        table={table}
+        classroomId={classroom.id ?? ""}
+        studentId={student.id ?? ""}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

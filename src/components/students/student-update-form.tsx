@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -21,15 +21,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { StudentSchema } from "@/lib/zod";
+import { ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UpdateStudent } from "@/actions/student";
+import { divisions, grades, shifts } from "@/constants/data";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
 type Student = z.infer<typeof StudentSchema>;
+type Classroom = z.infer<typeof ClassroomSchema>;
 
-export default function StudentUpdateForm({ student }: { student: Student }) {
+interface StudentUpdateFormProps {
+  student: Student;
+  classroom: Classroom;
+}
+
+export default function StudentUpdateForm({
+  student,
+  classroom,
+}: StudentUpdateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -54,6 +66,22 @@ export default function StudentUpdateForm({ student }: { student: Student }) {
       });
     });
   }
+
+  const classroomName =
+    grades.find((g) => g.value === classroom.grade)?.label +
+    " " +
+    divisions.find((d) => d.value === classroom.division)?.label +
+    " " +
+    shifts.find((s) => s.value === classroom.shift)?.label;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      setBreadcrumb(
+        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Editar`
+      )
+    );
+  }, [dispatch, classroomName, student.firstName, student.lastName]);
 
   return (
     <Card>

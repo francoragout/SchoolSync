@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input";
 import { CreateUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
 export default function AdminCreateForm() {
   const [isPending, startTransition] = useTransition();
@@ -55,6 +57,11 @@ export default function AdminCreateForm() {
       });
     });
   }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setBreadcrumb("Administradores/Crear"));
+  }, [dispatch]);
 
   return (
     <Card>

@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { PreceptorsTableToolbar } from "./preceptors-table-toolbar";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 // import { useDispatch, useSelector } from "react-redux";
 // import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 
@@ -68,10 +70,10 @@ export function PreceptorsTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(setPathname("Administración/Administradores"));
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(setBreadcrumb("Preceptores"));
+  }, [dispatch]);
 
   return (
     <div className="space-y-4">

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -35,6 +35,8 @@ import { divisions, grades, shifts } from "@/constants/data";
 import { cn } from "@/lib/utils";
 import { CreateClassroom } from "@/actions/classroom";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
 type User = z.infer<typeof UserSchema>;
 
@@ -64,6 +66,11 @@ export default function ClassroomCreateForm({
       });
     });
   }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setBreadcrumb("Aulas/Crear"));
+  }, [dispatch]);
 
   return (
     <Card>

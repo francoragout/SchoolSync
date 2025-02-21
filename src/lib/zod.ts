@@ -28,17 +28,17 @@ export const UserSchema = z.object({
 });
 
 const Division = z.enum(["A", "B", "C", "D"], {
-  message: "Seleccionar una división",
+  message: "Seleccione una división",
 });
 const Grade = z.enum(["FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH"], {
-  message: "Seleccionar un grado",
+  message: "Seleccione un grado",
 });
 const Shift = z.enum(["MORNING", "AFTERNOON"], {
-  message: "Seleccionar un turno",
+  message: "Seleccione un turno",
 });
 
 const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
-  message: "Seleccionar un estado",
+  message: "Seleccione un estado",
 });
 
 export const ClassroomSchema = z.object({
@@ -83,12 +83,5 @@ export const AttendanceSchema = z.object({
   studentId: z.string(),
   student: StudentSchema.optional(),
   status: Status,
-  createdAt: z.date(),
+  date: z.date({ required_error: "Seleccione una fecha" }),
 });
-
-export const AttendancesSchema = z.object({
-  ids: z.array(z.string()),
-  status: Status,
-});
-
-

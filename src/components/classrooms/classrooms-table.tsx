@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 // import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
 // import { useDispatch, useSelector } from "react-redux";
 // import { setPathname } from "@/lib/features/pathname/pathnameSlice";
@@ -69,10 +71,10 @@ export function ClassroomsTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch(setPathname("Administración/Administradores"));
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(setBreadcrumb("Aulas"));
+  }, [dispatch]);
 
   return (
     <div className="space-y-4">

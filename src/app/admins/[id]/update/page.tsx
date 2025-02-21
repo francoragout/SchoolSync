@@ -2,8 +2,9 @@ import AdminUpdateForm from "@/components/admins/admin-update-form";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
+const URL = process.env.API_URL 
+
 type User = z.infer<typeof UserSchema>;
-const URL = process.env.API_URL || "http://localhost:5000";
 
 async function GetAdmin(id: string): Promise<User> {
   const data = await fetch(`${URL}/api/users/${id}`, {

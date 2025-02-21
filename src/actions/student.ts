@@ -26,13 +26,13 @@ export async function CreateStudent(
 
     return {
       success: true,
-      message: "Estudiante creado exitosamente",
+      message: "Alumno creado exitosamente",
     };
   } catch (error) {
     console.log("Failed to create student:", error);
     return {
       success: false,
-      message: "Error al crear estudiante",
+      message: "Error al crear alumno",
     };
   }
 }
@@ -57,13 +57,13 @@ export async function UpdateStudent(
 
     return {
       success: true,
-      message: "Estudiante actualizado exitosamente",
+      message: "Alumno actualizado exitosamente",
     };
   } catch (error) {
     console.log("Failed to update student:", error);
     return {
       success: false,
-      message: "Error al actualizar estudiante",
+      message: "Error al actualizar alumno",
     };
   }
 }

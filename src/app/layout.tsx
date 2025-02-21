@@ -3,12 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { SidebarLeft } from "@/components/sidebar-left";
 import { SidebarRight } from "@/components/sidebar-right";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -16,6 +11,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import StoreProvider from "./StoreProvider";
+import BreadcrumbDinamic from "@/components/breadcrumb-dinamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,33 +31,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <SidebarProvider>
-          <SidebarLeft />
-          <SidebarInset className="overflow-x-auto">
-            <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
-              <div className="flex flex-1 items-center gap-2 px-3">
-                <SidebarTrigger />
-                <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb>
-                  <BreadcrumbList>
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="line-clamp-1">
-                        Project Management & Task Tracking
-                      </BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
-              </div>
-            </header>
-            <div className="gap-4 p-4">
-              {children}
-            </div>
-            <Toaster />
-          </SidebarInset>
-          <SidebarRight />
-        </SidebarProvider>
-      </body>
+      <StoreProvider>
+        <body className={`${inter.className} antialiased`}>
+          <SidebarProvider>
+            <SidebarLeft />
+            <SidebarInset className="overflow-x-auto">
+              <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
+                <div className="flex flex-1 items-center gap-2 px-3">
+                  <SidebarTrigger />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                  <BreadcrumbDinamic />
+                </div>
+              </header>
+              <div className="gap-4 p-4">{children}</div>
+              <Toaster />
+            </SidebarInset>
+            <SidebarRight />
+          </SidebarProvider>
+        </body>
+      </StoreProvider>
     </html>
   );
 }

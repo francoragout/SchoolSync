@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input";
 import { CreateUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
 export default function PreceptorCreateForm() {
   const [isPending, startTransition] = useTransition();
@@ -55,6 +57,11 @@ export default function PreceptorCreateForm() {
       });
     });
   }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setBreadcrumb("Preceptores/Crear"));
+  }, [dispatch]);
 
   return (
     <Card>
@@ -137,6 +144,7 @@ export default function PreceptorCreateForm() {
                         {...field}
                         disabled={isPending}
                         type="tel"
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormMessage />

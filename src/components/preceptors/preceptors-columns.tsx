@@ -6,9 +6,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { z } from "zod";
 import { UserSchema } from "@/lib/zod";
 import { PersonIcon } from "@radix-ui/react-icons";
-import { AdminTableRowActions } from "@/components/admins/admins-table-row-actions";
 import { formatDate } from "date-fns";
 import { Checkbox } from "../ui/checkbox";
+import { PreceptorsTableRowActions } from "./preceptors-table-row-actions";
 
 type User = z.infer<typeof UserSchema>;
 
@@ -92,6 +92,6 @@ export const PreceptorsColumns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <AdminTableRowActions row={row} />,
+    cell: ({ row }) => <PreceptorsTableRowActions row={row} />,
   },
 ];

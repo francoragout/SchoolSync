@@ -29,12 +29,9 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { StudentsTableToolbar } from "./students-table-toolbar";
 import { z } from "zod";
 import { ClassroomSchema } from "@/lib/zod";
-// import { useDispatch } from "react-redux";
-// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
-// import { z } from "zod";
-// import { divisions, grades, shifts } from "@/constants/data";
-// import { ClassroomSchema } from "@/lib/zod";
-// import { StudentsTableToolbar } from "./students-table-toolbar";
+import { divisions, grades, shifts } from "@/constants/data";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
 
@@ -84,17 +81,17 @@ export function StudentsTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  //   const classroomName =
-  //     grades.find((g) => g.value === classroom.grade)?.label +
-  //     " " +
-  //     divisions.find((d) => d.value === classroom.division)?.label +
-  //     " " +
-  //     shifts.find((s) => s.value === classroom.shift)?.label;
+  const classroomName =
+    grades.find((g) => g.value === classroom.grade)?.label +
+    " " +
+    divisions.find((d) => d.value === classroom.division)?.label +
+    " " +
+    shifts.find((s) => s.value === classroom.shift)?.label;
 
-  //   const dispatch = useDispatch();
-  //   React.useEffect(() => {
-  //     dispatch(setPathname(`/Administración/Aulas/${classroomName}/Alumnos`));
-  //   }, [dispatch, classroomName]);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(setBreadcrumb(`Aulas/${classroomName}/Alumnos`));
+  }, [dispatch, classroomName]);
 
   return (
     <div className="space-y-4">

@@ -4,7 +4,7 @@ export const statuses = [
       label: "Ausente",
     },
     {
-      value: "LATE",
+      value: "TARDY",
       label: "Tarde",
     },
     {

@@ -63,7 +63,7 @@ export function PreceptorsTableRowActions<TData>({
             className="flex justify-start pl-2"
             size="sm"
           >
-            <Link href={`/admins/${user.id}/update`}>
+            <Link href={`/preceptors/${user.id}/update`}>
               <Pencil className="mr-2 h-4 w-4" />
               <span>Editar</span>
             </Link>

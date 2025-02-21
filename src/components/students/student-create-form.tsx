@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -21,16 +21,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { StudentSchema } from "@/lib/zod";
+import { ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CreateStudent } from "@/actions/student";
+import { divisions, grades, shifts } from "@/constants/data";
+import { useDispatch } from "react-redux";
+import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+
+type Classroom = z.infer<typeof ClassroomSchema>;
 
 export default function StudentCreateForm({
-  classroomId,
+  classroom,
 }: {
-  classroomId: string;
+  classroom: Classroom;
 }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -45,17 +50,30 @@ export default function StudentCreateForm({
 
   function onSubmit(values: z.infer<typeof StudentSchema>) {
     startTransition(() => {
-      CreateStudent(values, classroomId).then((response) => {
+      CreateStudent(values, classroom.id ?? "").then((response) => {
+        console.log(values, classroom.id);
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push(`/classrooms/${classroomId}/students`);
+          router.push(`/classrooms/${classroom.id}/students`);
         } else {
           toast.error(response.message);
         }
       });
     });
   }
+
+  const classroomName =
+    grades.find((g) => g.value === classroom.grade)?.label +
+    " " +
+    divisions.find((d) => d.value === classroom.division)?.label +
+    " " +
+    shifts.find((s) => s.value === classroom.shift)?.label;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setBreadcrumb(`Aulas/${classroomName}/Alumnos/Crear`));
+  }, [dispatch, classroomName]);
 
   return (
     <Card>
@@ -116,7 +134,7 @@ export default function StudentCreateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href={`/classrooms/${classroomId}/students`}>
+                <Link href={`/classrooms/${classroom.id}/students`}>
                   Cancelar
                 </Link>
               </Button>
