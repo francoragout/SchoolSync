@@ -92,7 +92,7 @@ export default function ClassroomUpdateForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Crear Aula</CardTitle>
+        <CardTitle>Editar Aula</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>

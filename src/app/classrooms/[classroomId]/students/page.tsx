@@ -1,11 +1,12 @@
 import { StudentsColumns } from "@/components/students/students-columns";
 import { StudentsTable } from "@/components/students/students-table";
-import { ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { z } from "zod";
 
 const URL = process.env.API_URL;
 
 type Student = z.infer<typeof StudentSchema>;
+type Attendance = z.infer<typeof AttendanceSchema>;
 
 async function GetStudents(classroomId: string): Promise<Student[]> {
   const data = await fetch(`${URL}/api/students/classroom/${classroomId}`, {
@@ -15,6 +16,12 @@ async function GetStudents(classroomId: string): Promise<Student[]> {
   const students = await data.json();
 
   return students.map((student: Student) => {
+    student.attendance = student.attendance?.map(
+      (attendanceItem: Attendance) => {
+        attendanceItem.date = new Date(attendanceItem.date);
+        return attendanceItem;
+      }
+    );
     return StudentSchema.parse(student);
   });
 }

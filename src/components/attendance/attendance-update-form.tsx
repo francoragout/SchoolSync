@@ -41,7 +41,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
-import { CreateAttendance } from "@/actions/attendance";
+import { UpdateAttendance } from "@/actions/attendance";
 import { Calendar } from "../ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -49,36 +49,45 @@ import { es } from "date-fns/locale";
 
 type Student = z.infer<typeof StudentSchema>;
 type Classroom = z.infer<typeof ClassroomSchema>;
+type Attendance = z.infer<typeof AttendanceSchema>;
 
 interface AttendanceCreateFormProps {
   classroom: Classroom;
   student: Student;
+  attendance: Attendance;
 }
 
-export default function AttendanceCreateForm({
+export default function AttendanceUpdateForm({
   classroom,
   student,
+  attendance,
 }: AttendanceCreateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof AttendanceSchema>>({
     resolver: zodResolver(AttendanceSchema),
+    defaultValues: {
+      date: attendance.date,
+      status: attendance.status,
+    },
   });
 
   function onSubmit(values: z.infer<typeof AttendanceSchema>) {
     startTransition(() => {
-      CreateAttendance(values, student.id ?? "").then((response) => {
-        if (response.success) {
-          toast.success(response.message);
-          form.reset();
-          router.push(
-            `/classrooms/${classroom.id}/students/${student.id}/attendance`
-          );
-        } else {
-          toast.error(response.message);
+      UpdateAttendance(values, student.id ?? "", attendance.id ?? "").then(
+        (response) => {
+          if (response.success) {
+            toast.success(response.message);
+            form.reset();
+            router.push(
+              `/classrooms/${classroom.id}/students/${student.id}/attendance`
+            );
+          } else {
+            toast.error(response.message);
+          }
         }
-      });
+      );
     });
   }
 
@@ -93,15 +102,23 @@ export default function AttendanceCreateForm({
   useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia/Crear`
+        `Aulas/${classroomName}/Alumnos/${student.firstName} ${
+          student.lastName
+        }/Asistencia/${format(attendance.date, "PPP", { locale: es })}/Editar`
       )
     );
-  }, [dispatch, classroomName, student.firstName, student.lastName]);
+  }, [
+    dispatch,
+    classroomName,
+    student.firstName,
+    student.lastName,
+    attendance.date,
+  ]);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Crear Asistencia</CardTitle>
+        <CardTitle>Editar Asistencia</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -166,7 +183,11 @@ export default function AttendanceCreateForm({
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Estado</FormLabel>
-                    <Select onValueChange={field.onChange} disabled={isPending}>
+                    <Select
+                      onValueChange={field.onChange}
+                      disabled={isPending}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger
                           className={cn(

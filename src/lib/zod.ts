@@ -55,6 +55,13 @@ export const ClassroomSchema = z.object({
     .optional(),
 });
 
+export const AttendanceSchema = z.object({
+  id: z.string().optional(),
+  studentId: z.string().optional(),
+  status: Status,
+  date: z.date({ required_error: "Seleccione una fecha" }),
+});
+
 export const StudentSchema = z.object({
   id: z.string().optional(),
   firstName: z
@@ -75,13 +82,7 @@ export const StudentSchema = z.object({
     }),
   image: z.string().nullish(),
   classroomId: z.string().optional(),
-  classroom: ClassroomSchema.nullish(),
+  classroom: ClassroomSchema.optional(),
+  attendance: z.array(AttendanceSchema).optional(),
 });
 
-export const AttendanceSchema = z.object({
-  id: z.string().optional(),
-  studentId: z.string(),
-  student: StudentSchema.optional(),
-  status: Status,
-  date: z.date({ required_error: "Seleccione una fecha" }),
-});

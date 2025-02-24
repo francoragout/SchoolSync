@@ -1,11 +1,5 @@
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { CalendarX2, ClockAlert, PlusCircle } from "lucide-react";
-// import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,8 +11,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Separator } from "../ui/separator";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { Table } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CalendarX2, ClockAlert, PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { CreateAttendances } from "@/actions/attendance";
+import { toast } from "sonner";
+import { Separator } from "../ui/separator";
+import { useState } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -30,42 +32,26 @@ export function StudentsTableToolbar<TData>({
   classroomId,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const isSomeRowsSelected =
-    table.getIsSomeRowsSelected() || table.getIsAllPageRowsSelected();
+  const selectedRows = table.getSelectedRowModel().rows;
 
-  const handleAbsentSelected = () => {
-    // const selectedRows = table.getSelectedRowModel().rows;
-    // const studentIds = selectedRows.map(
-    //   (row) => (row.original as { id: string }).id
-    // );
-    // CreateAbsent(studentIds, classroom.id || "").then((response) => {
-    //   if (response.success) {
-    //     toast.success(response.message);
-    //     table.resetRowSelection();
-    //   } else {
-    //     toast.error(response.message);
-    //   }
-    // });
-  };
-
-  const handleLateSelected = () => {
-    // const selectedRows = table.getSelectedRowModel().rows;
-    // const studentIds = selectedRows.map(
-    //   (row) => (row.original as { id: string }).id
-    // );
-    // createLate(studentIds, classroom.id || "").then((response) => {
-    //   if (response.success) {
-    //     toast.success(response.message);
-    //     table.resetRowSelection();
-    //   } else {
-    //     toast.error(response.message);
-    //   }
-    // });
+  const [status, setStatus] = useState("");
+  const handleSelected = () => {
+    const studentsIds = selectedRows.map(
+      (row) => (row.original as { id: string }).id
+    );
+    CreateAttendances(studentsIds, status).then((response) => {
+      if (response.success) {
+        toast.success(response.message);
+        table.resetRowSelection();
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-4">
+      <div className="flex flex-1 items-center space-x-3">
         <Input
           placeholder="Filtrar alumnos..."
           value={
@@ -86,104 +72,106 @@ export function StudentsTableToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
-        {isSomeRowsSelected && (
-          <>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 flex border-dashed"
-                >
-                  <CalendarX2 className="flex h-4 w-4 mr-1" />
-                  <span className="hidden sm:flex">Ausente</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Confirmar Falta</AlertDialogTitle>
-                  <Separator />
-                  <AlertDialogDescription className="flex flex-col">
-                    {table.getSelectedRowModel().rows.map((row) => (
-                      <span key={row.id}>
-                        {
-                          (
-                            row.original as {
-                              firstName: string;
-                              lastName: string;
-                            }
-                          ).firstName
-                        }{" "}
-                        {
-                          (
-                            row.original as {
-                              firstName: string;
-                              lastName: string;
-                            }
-                          ).lastName
-                        }
-                      </span>
-                    ))}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleAbsentSelected}>
-                    Continuar
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 flex border-dashed mr-1"
-                >
-                  <ClockAlert className="flex h-4 w-4" />
-                  <span className="hidden sm:flex">Tarde</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Confirmar Media Falta</AlertDialogTitle>
-                  <Separator />
-                  <AlertDialogDescription className="flex flex-col">
-                    {table.getSelectedRowModel().rows.map((row) => (
-                      <span key={row.id}>
-                        {
-                          (
-                            row.original as {
-                              firstName: string;
-                              lastName: string;
-                            }
-                          ).firstName
-                        }{" "}
-                        {
-                          (
-                            row.original as {
-                              firstName: string;
-                              lastName: string;
-                            }
-                          ).lastName
-                        }
-                      </span>
-                    ))}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLateSelected}>
-                    Continuar
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </>
-        )}
       </div>
-      <div className="flex">
+      <div className="flex space-x-3">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 flex"
+              disabled={selectedRows.length === 0}
+              onClick={() => setStatus("ABSENT")}
+            >
+              <CalendarX2 className="flex sm:hidden h-4 w-4" />
+              <span className="hidden sm:flex">Ausente</span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Alumnos Ausentes:</AlertDialogTitle>
+              <Separator />
+              <AlertDialogDescription className="flex flex-col">
+                {table.getSelectedRowModel().rows.map((row) => (
+                  <span key={row.id}>
+                    {
+                      (
+                        row.original as {
+                          firstName: string;
+                          lastName: string;
+                        }
+                      ).firstName
+                    }{" "}
+                    {
+                      (
+                        row.original as {
+                          firstName: string;
+                          lastName: string;
+                        }
+                      ).lastName
+                    }
+                  </span>
+                ))}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={handleSelected}>
+                Continuar
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 flex"
+              disabled={selectedRows.length === 0}
+              onClick={() => setStatus("TARDY")}
+            >
+              <ClockAlert className="flex sm:hidden h-4 w-4" />
+              <span className="hidden sm:flex">Tarde</span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Alumnos Tarde:</AlertDialogTitle>
+              <Separator />
+              <AlertDialogDescription className="flex flex-col">
+                {table.getSelectedRowModel().rows.map((row) => (
+                  <span key={row.id}>
+                    {
+                      (
+                        row.original as {
+                          firstName: string;
+                          lastName: string;
+                        }
+                      ).firstName
+                    }{" "}
+                    {
+                      (
+                        row.original as {
+                          firstName: string;
+                          lastName: string;
+                        }
+                      ).lastName
+                    }
+                  </span>
+                ))}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={handleSelected}>
+                Continuar
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <Button size="sm" className="h-8 flex" asChild>
           <Link href={`/classrooms/${classroomId}/students/create`}>
             <PlusCircle className="flex sm:hidden h-4 w-4" />

@@ -16,6 +16,12 @@ export async function CreateUser(values: z.infer<typeof UserSchema>) {
       body: JSON.stringify(values),
     });
 
+    const data = await response.json();
+
+    if (response.status === 409) {
+      return { success: false, status: "exists", message: data.message };
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Failed to create user: ${errorText}`);
@@ -46,6 +52,12 @@ export async function UpdateUser(
       },
       body: JSON.stringify(values),
     });
+
+    const data = await response.json();
+
+    if (response.status === 409) {
+      return { success: false, status: "exists", message: data.message };
+    }
 
     if (!response.ok) {
       const errorText = await response.text();

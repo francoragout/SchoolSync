@@ -20,6 +20,7 @@ async function GetAttendance(studentId: string): Promise<Attendance[]> {
       date: attendance.date ? new Date(attendance.date) : undefined,
     });
   });
+
 }
 
 type Classroom = z.infer<typeof ClassroomSchema>;
