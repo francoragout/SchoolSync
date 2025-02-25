@@ -4,7 +4,7 @@ import { UserSchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const URL = process.env.API_URL
+const URL = process.env.API_URL;
 
 export async function CreateUser(values: z.infer<typeof UserSchema>) {
   try {
@@ -77,40 +77,14 @@ export async function UpdateUser(
   }
 }
 
-export async function DeleteUser(id: string) {
-  try {
-    const response = await fetch(`${URL}/api/users/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to delete user: ${errorText}`);
-    }
-
-    revalidatePath("/");
-
-    return {
-      success: true,
-      message: "Usuario eliminado exitosamente",
-    };
-  } catch (error) {
-    console.log("Failed to delete user:", error);
-    return {
-      success: false,
-      message: "Error al eliminar usuario",
-    };
-  }
-}
-
-export async function DeleteUsers(ids: string[]) {
+export async function DeleteUsers(ids: string[], pathname: string) {
   try {
     const response = await fetch(`${URL}/api/users`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ids }), 
+      body: JSON.stringify({ ids }),
     });
 
     if (!response.ok) {
@@ -118,7 +92,7 @@ export async function DeleteUsers(ids: string[]) {
       throw new Error(`Failed to delete users: ${errorText}`);
     }
 
-    revalidatePath("/");
+    revalidatePath(pathname);
 
     return {
       success: true,

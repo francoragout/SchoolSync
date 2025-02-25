@@ -10,22 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 import { StudentSchema } from "@/lib/zod";
 import Link from "next/link";
-import { Calendar, Trash, Users } from "lucide-react";
-import { toast } from "sonner";
-import { DeleteStudent } from "@/actions/student";
+import { Calendar, Pencil } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -35,15 +23,6 @@ export function StudentsTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const student = StudentSchema.parse(row.original);
-  const handleDelete = async () => {
-    DeleteStudent(student.id ?? "", student.classroomId ?? "").then((response) => {
-      if (response.success) {
-        toast.success(response.message);
-      } else {
-        toast.error(response.message);
-      }
-    });
-  };
 
   return (
     <DropdownMenu>
@@ -73,9 +52,7 @@ export function StudentsTableRowActions<TData>({
               <span>Asistencia</span>
             </Link>
           </Button>
-
-          <DropdownMenuSeparator />
-
+          
           <Button
             asChild
             variant="ghost"
@@ -85,47 +62,10 @@ export function StudentsTableRowActions<TData>({
             <Link
               href={`/classrooms/${student.classroomId}/students/${student.id}/update`}
             >
-              <Users className="mr-2 h-4 w-4" />
+              <Pencil className="mr-2 h-4 w-4" />
               <span>Editar</span>
             </Link>
           </Button>
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex justify-start pl-2 w-full"
-              >
-                <Trash className="mr-2 h-4 w-4" />
-                Eliminar
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  ¿Estas completamente seguro?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Esta acción no se puede deshacer. Esto eliminará
-                  permanentemente al alumno:
-                  {
-                    <span className="text-primary">
-                      {" "}
-                      &apos;{student.firstName} {student.lastName}&apos;
-                    </span>
-                  }{" "}
-                  y todos los datos asociados de nuestros servidores.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete}>
-                  Continuar
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

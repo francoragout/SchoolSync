@@ -68,28 +68,32 @@ export async function UpdateStudent(
   }
 }
 
-export async function DeleteStudent(studentId: string, classroomId: string) {
+export async function DeleteStudents(ids: string[], pathname: string) {
   try {
-    const response = await fetch(`${URL}/api/students/${studentId}`, {
+    const response = await fetch(`${URL}/api/students`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to delete student: ${errorText}`);
+      throw new Error(`Failed to delete users: ${errorText}`);
     }
 
-    revalidatePath(`/classrooms/${classroomId}/students`);
+    revalidatePath(pathname);
 
     return {
       success: true,
-      message: "Alumno eliminado exitosamente",
+      message: "Alumnos eliminados exitosamente",
     };
   } catch (error) {
-    console.log("Failed to delete student:", error);
+    console.log("Failed to delete users:", error);
     return {
       success: false,
-      message: "Error al eliminar Alumno",
+      message: "Error al eliminar alumnos",
     };
   }
 }

@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+const Division = z.enum(["A", "B", "C", "D"], {
+  message: "Seleccione una división",
+});
+const Grade = z.enum(["FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH"], {
+  message: "Seleccione un grado",
+});
+const Shift = z.enum(["MORNING", "AFTERNOON"], {
+  message: "Seleccione un turno",
+});
+
+const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
+  message: "Seleccione un estado",
+});
+
 export const UserSchema = z.object({
   id: z.string().optional(),
   firstName: z
@@ -25,20 +39,16 @@ export const UserSchema = z.object({
   image: z.string().nullish(),
   phone: z.string().nullish(),
   createdAt: z.date().optional(),
-});
-
-const Division = z.enum(["A", "B", "C", "D"], {
-  message: "Seleccione una división",
-});
-const Grade = z.enum(["FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH"], {
-  message: "Seleccione un grado",
-});
-const Shift = z.enum(["MORNING", "AFTERNOON"], {
-  message: "Seleccione un turno",
-});
-
-const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
-  message: "Seleccione un estado",
+  classrooms: z
+    .array(
+      z.object({
+        id: z.string(),
+        grade: Grade,
+        division: Division,
+        shift: Shift,
+      })
+    )
+    .optional(),
 });
 
 export const ClassroomSchema = z.object({
@@ -85,4 +95,3 @@ export const StudentSchema = z.object({
   classroom: ClassroomSchema.optional(),
   attendance: z.array(AttendanceSchema).optional(),
 });
-

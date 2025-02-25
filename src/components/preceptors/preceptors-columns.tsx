@@ -9,6 +9,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { formatDate } from "date-fns";
 import { Checkbox } from "../ui/checkbox";
 import { PreceptorsTableRowActions } from "./preceptors-table-row-actions";
+import { divisions, grades, shifts } from "@/constants/data";
 
 type User = z.infer<typeof UserSchema>;
 
@@ -88,6 +89,32 @@ export const PreceptorsColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const createdAt = new Date(row.getValue("createdAt"));
       return <div>{formatDate(createdAt, "dd/MM/yyyy")}</div>;
+    },
+  },
+  {
+    accessorKey: "classrooms",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Aulas" />
+    ),
+    cell: ({ row }) => {
+      const classrooms = row.getValue("classrooms") as {
+        id: string;
+        grade: string;
+        division: string;
+        shift: string;
+      }[];
+
+      return (
+        <div>
+          {classrooms?.map((classroom) => (
+            <div key={classroom.id}>
+              {grades.find((g) => g.value === classroom.grade)?.label}{" "}
+              {divisions.find((d) => d.value === classroom.division)?.label}{" "}
+              {shifts.find((s) => s.value === classroom.shift)?.label}
+            </div>
+          ))}
+        </div>
+      );
     },
   },
   {
