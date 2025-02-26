@@ -1,18 +1,17 @@
 import * as React from "react"
-import { Plus } from "lucide-react"
-
-import { Calendars } from "@/components/calendars"
-import { DatePicker } from "@/components/date-picker"
+// import { Plus } from "lucide-react"
+// import { Calendars } from "@/components/calendars"
+// import { DatePicker } from "@/components/date-picker"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
-  SidebarContent,
-  SidebarFooter,
+  // SidebarContent,
+  // SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarSeparator,
+  // SidebarMenu,
+  // SidebarMenuButton,
+  // SidebarMenuItem,
+  // SidebarSeparator,
 } from "@/components/ui/sidebar"
 
 // This is sample data.
