@@ -47,8 +47,8 @@ export function ClassroomsTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Reiniciar
-            <Cross2Icon className="ml-2 h-4 w-4" />
+            <Cross2Icon className="flex xl:hidden h-4 w-4" />
+            <span className="hidden xl:block">Reiniciar</span>
           </Button>
         )}
       </div>

@@ -14,8 +14,6 @@ async function GetPreceptors(): Promise<User[]> {
 
   const users = await data.json();
 
-  console.log("Fetched users:", users);
-
   if (!Array.isArray(users)) {
     throw new Error("API response is not an array");
   }

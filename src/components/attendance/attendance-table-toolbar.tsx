@@ -86,7 +86,7 @@ export function AttendanceTableToolbar<TData>({
                     todos los datos asociados de nuestros servidores.
                   </span>
 
-                  <div className="flex flex-col">
+                  <span className="flex flex-col">
                     Items seleccionados:
                     {table.getSelectedRowModel().rows.map((row) => (
                       <span key={row.id} className="text-foreground">
@@ -95,7 +95,7 @@ export function AttendanceTableToolbar<TData>({
                         ).toLocaleDateString()}
                       </span>
                     ))}
-                  </div>
+                  </span>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
