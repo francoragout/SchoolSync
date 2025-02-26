@@ -45,7 +45,11 @@ export async function CreateAttendance(
   }
 }
 
-export async function CreateAttendances(studentsIds: string[], status: string) {
+export async function CreateAttendances(
+  studentsIds: string[],
+  status: string,
+  pathname: string
+) {
   try {
     const date = new Date().toISOString();
 
@@ -68,7 +72,7 @@ export async function CreateAttendances(studentsIds: string[], status: string) {
       throw new Error(`Failed to create absent: ${errorText}`);
     }
 
-    revalidatePath("/classrooms");
+    revalidatePath(pathname);
 
     return {
       success: true,
@@ -123,14 +127,14 @@ export async function UpdateAttendance(
   }
 }
 
-export async function DeleteAttendances(ids: string[]) {
+export async function DeleteAttendances(ids: string[], pathname: string) {
   try {
     const response = await fetch(`${URL}/api/attendance`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ids }), 
+      body: JSON.stringify({ ids }),
     });
 
     if (!response.ok) {
@@ -138,7 +142,7 @@ export async function DeleteAttendances(ids: string[]) {
       throw new Error(`Failed to delete attendance: ${errorText}`);
     }
 
-    revalidatePath("/");
+    revalidatePath(pathname);
 
     return {
       success: true,

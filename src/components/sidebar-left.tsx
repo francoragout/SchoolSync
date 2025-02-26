@@ -45,7 +45,7 @@ const data = {
           url: "/classrooms",
         },
       ],
-    }
+    },
   ],
 };
 
@@ -65,7 +65,7 @@ export function SidebarLeft({
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">ShoolSync</span>
-                  <span className="">Home</span>
+                  <span className="">Inicio</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -97,7 +97,7 @@ export function SidebarLeft({
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton
                           asChild
-                          isActive={pathname === item.url}
+                          isActive={pathname.startsWith(item.url)}
                         >
                           <a href={item.url}>{item.title}</a>
                         </SidebarMenuButton>

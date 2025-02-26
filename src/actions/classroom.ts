@@ -101,3 +101,33 @@ export async function DeleteClassroom(id: string) {
     };
   }
 }
+
+export async function DeleteClassrooms(ids: string[]) {
+  try {
+    const response = await fetch(`${URL}/api/classrooms`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to delete classrooms: ${errorText}`);
+    }
+
+    revalidatePath("/classrooms");
+
+    return {
+      success: true,
+      message: "Aulas eliminadas exitosamente",
+    };
+  } catch (error) {
+    console.log("Failed to delete classrooms:", error);
+    return {
+      success: false,
+      message: "Error al eliminar aulas",
+    };
+  }
+}

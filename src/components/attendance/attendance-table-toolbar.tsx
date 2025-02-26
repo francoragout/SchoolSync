@@ -19,6 +19,7 @@ import Link from "next/link";
 import { PlusCircle, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { DeleteAttendances } from "@/actions/attendance";
+import { usePathname } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -32,6 +33,7 @@ export function AttendanceTableToolbar<TData>({
   studentId,
 }: DataTableToolbarProps<TData>) {
   const selectedRowsCount = table.getSelectedRowModel().rows.length;
+  const pathname = usePathname();
 
   const handleDeleteSelected = () => {
     const selectedRows = table.getSelectedRowModel().rows;
@@ -39,7 +41,7 @@ export function AttendanceTableToolbar<TData>({
       (row) => (row.original as { id: string }).id
     );
 
-    DeleteAttendances(tasksIds).then((response) => {
+    DeleteAttendances(tasksIds, pathname).then((response) => {
       if (response.success) {
         toast.success(response.message);
         table.resetRowSelection();
@@ -99,9 +101,9 @@ export function AttendanceTableToolbar<TData>({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDeleteSelected}>
-                  Continue
+                  Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

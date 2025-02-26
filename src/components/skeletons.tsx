@@ -51,3 +51,15 @@ export function TableSkeleton() {
     </div>
   );
 }
+
+export function FormSkeleton() {
+  return (
+    <Skeleton className="h-[358px] w-full" />
+  );
+}
+
+export function FormSkeletonSM() {
+  return (
+    <Skeleton className="h-[266px] w-full" />
+  );
+}

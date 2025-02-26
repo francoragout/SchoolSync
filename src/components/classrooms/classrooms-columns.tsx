@@ -6,11 +6,36 @@ import { z } from "zod";
 import { ClassroomSchema, UserSchema } from "@/lib/zod";
 import { divisions, grades, shifts } from "@/constants/data";
 import { ClassroomTableRowActions } from "./classrooms-table-row-actions";
+import { Checkbox } from "../ui/checkbox";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
 type User = z.infer<typeof UserSchema>;
 
 export const ClassroomsColumns: ColumnDef<Classroom>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "grade",
     header: ({ column }) => (
@@ -109,8 +134,8 @@ export const ClassroomsColumns: ColumnDef<Classroom>[] = [
       );
     },
   },
-    {
-      id: "actions",
-      cell: ({ row }) => <ClassroomTableRowActions row={row} />,
-    },
+  {
+    id: "actions",
+    cell: ({ row }) => <ClassroomTableRowActions row={row} />,
+  },
 ];

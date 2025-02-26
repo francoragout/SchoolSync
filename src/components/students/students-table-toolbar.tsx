@@ -46,7 +46,7 @@ export function StudentsTableToolbar<TData>({
       (row) => (row.original as { id: string }).id
     );
 
-    CreateAttendances(studentsIds, status).then((response) => {
+    CreateAttendances(studentsIds, status, pathname).then((response) => {
       if (response.success) {
         toast.success(response.message);
         table.resetRowSelection();
@@ -148,9 +148,9 @@ export function StudentsTableToolbar<TData>({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDeleteSelected}>
-                  Continue
+                  Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

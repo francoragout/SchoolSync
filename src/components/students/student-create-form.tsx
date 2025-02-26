@@ -124,6 +124,25 @@ export default function StudentCreateForm({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Imagen URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Imagen URL (opcional)"
+                        {...field}
+                        disabled={isPending}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="flex justify-end space-x-4 mt-8">
               <Button

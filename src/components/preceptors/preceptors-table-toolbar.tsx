@@ -124,9 +124,9 @@ export function PreceptorsTableToolbar<TData>({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDeleteSelected}>
-                  Continue
+                  Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

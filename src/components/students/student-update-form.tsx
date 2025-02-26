@@ -50,6 +50,7 @@ export default function StudentUpdateForm({
     defaultValues: {
       firstName: student.firstName,
       lastName: student.lastName,
+      image: student.image,
     },
   });
 
@@ -127,6 +128,25 @@ export default function StudentUpdateForm({
                         placeholder="Apellido (requerido)"
                         {...field}
                         disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Imagen URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Imagen URL (opcional)"
+                        {...field}
+                        disabled={isPending}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormMessage />

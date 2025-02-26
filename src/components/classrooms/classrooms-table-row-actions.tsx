@@ -10,23 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import Link from "next/link";
-import { Calendar, LibraryBig, Pencil, Trash, Users } from "lucide-react";
-import { grades, shifts } from "@/constants/data";
-import { toast } from "sonner";
+import { Calendar, LibraryBig, Pencil, Users } from "lucide-react";
 import { ClassroomSchema } from "@/lib/zod";
-import { DeleteClassroom } from "@/actions/classroom";
+
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -36,16 +23,6 @@ export function ClassroomTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const classroom = ClassroomSchema.parse(row.original);
-
-  const handleDelete = async () => {
-    DeleteClassroom(classroom.id ?? "").then((response) => {
-      if (response.success) {
-        toast.success(response.message);
-      } else {
-        toast.error(response.message);
-      }
-    });
-  };
 
   return (
     <DropdownMenu>
@@ -111,49 +88,6 @@ export function ClassroomTableRowActions<TData>({
               <span>Editar</span>
             </Link>
           </Button>
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex justify-start pl-2 w-full"
-              >
-                <Trash className="mr-2 h-4 w-4" />
-                Eliminar
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  ¿Estas completamente seguro?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Esta acción no se puede deshacer. Esto eliminará
-                  permanentemente el aula:
-                  {
-                    <span className="text-primary">
-                      {" "}
-                      &apos;
-                      {
-                        grades.find((g) => g.value === classroom.grade)?.label
-                      }{" "}
-                      {classroom.division}{" "}
-                      {shifts.find((s) => s.value === classroom.shift)?.label}
-                      &apos;
-                    </span>
-                  }{" "}
-                  y todos los datos asociados de nuestros servidores.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete}>
-                  Continuar
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

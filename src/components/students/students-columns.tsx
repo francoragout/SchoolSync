@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { StudentsTableRowActions } from "./students-table-row-actions";
@@ -8,7 +15,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AttendanceSchema, StudentSchema } from "@/lib/zod";
 import { Checkbox } from "../ui/checkbox";
 import { PersonIcon } from "@radix-ui/react-icons";
-// import clsx from "clsx";
+import { Button } from "../ui/button";
+import Image from "next/image";
 
 type Student = z.infer<typeof StudentSchema>;
 type Attendance = z.infer<typeof AttendanceSchema>;
@@ -44,12 +52,33 @@ export const StudentsColumns: ColumnDef<Student>[] = [
     cell: ({ row }) => {
       const image = row.getValue("image") as string;
       return (
-        <Avatar>
-          <AvatarImage src={image} alt="avatar" />
-          <AvatarFallback className="bg-secondary">
-            <PersonIcon />
-          </AvatarFallback>
-        </Avatar>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" className="rounded-full p-0">
+              <Avatar>
+                {image ? (
+                  <AvatarImage src={image} alt="avatar" />
+                ) : (
+                  <AvatarFallback className="bg-secondary">
+                    <PersonIcon />
+                  </AvatarFallback>
+                )}
+              </Avatar>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                {row.getValue("firstName") + " " + row.getValue("lastName")}
+              </DialogTitle>
+            </DialogHeader>
+            {image ? (
+              <Image src={image} alt="avatar" width={500} height={500}/>
+            ) : (
+              <div>Imagen no disponible</div>
+            )}
+          </DialogContent>
+        </Dialog>
       );
     },
   },
@@ -83,23 +112,7 @@ export const StudentsColumns: ColumnDef<Student>[] = [
       const totalAllowedAbsences = 15;
       const attendancePercentage =
         100 - (totalAbsences / totalAllowedAbsences) * 100;
-
-      return (
-        // <div
-        // className={clsx(
-        //   attendancePercentage === 100 && "text-green-500",
-        //   attendancePercentage >= 50 &&
-        //     attendancePercentage < 100 &&
-        //     "text-yellow-500",
-        //   attendancePercentage < 50 && "text-red-500",
-
-        //   "font-medium"
-        // )}
-        // >
-        //   {attendancePercentage.toFixed(1)}%
-        // </div>
-        <div>{attendancePercentage.toFixed(1)}%</div>
-      );
+      return <div>{attendancePercentage.toFixed(1)}%</div>;
     },
   },
   {
