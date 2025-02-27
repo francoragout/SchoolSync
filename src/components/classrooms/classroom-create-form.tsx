@@ -59,7 +59,7 @@ export default function ClassroomCreateForm({
         if (response.success) {
           toast.success(response.message);
           form.reset();
-          router.push("/classrooms");
+          router.push("/school/classrooms");
         } else {
           toast.error(response.message);
         }
@@ -69,7 +69,7 @@ export default function ClassroomCreateForm({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb("Aulas/Crear"));
+    dispatch(setBreadcrumb("Escuela/Aulas/Crear"));
   }, [dispatch]);
 
   return (
@@ -229,7 +229,7 @@ export default function ClassroomCreateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/classrooms">Cancelar</Link>
+                <Link href="/school/classrooms">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

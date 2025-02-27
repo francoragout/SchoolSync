@@ -90,7 +90,7 @@ export function AttendanceTable<TData, TValue>({
   React.useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia`
+        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia`
       )
     );
   }, [dispatch, classroomName, student.firstName, student.lastName]);
@@ -99,8 +99,6 @@ export function AttendanceTable<TData, TValue>({
     <div className="space-y-4">
       <AttendanceTableToolbar
         table={table}
-        classroomId={classroom.id ?? ""}
-        studentId={student.id ?? ""}
       />
       <div className="rounded-md border">
         <Table>

@@ -133,7 +133,7 @@ export function PreceptorsTableToolbar<TData>({
           </AlertDialog>
         )}
         <Button size="sm" className="h-8 flex" asChild>
-          <Link href="/admins/create">
+          <Link href="/school/preceptors/create">
             <PlusCircle className="flex sm:hidden h-4 w-4" />
             <span className="hidden sm:flex">Agregar</span>
           </Link>

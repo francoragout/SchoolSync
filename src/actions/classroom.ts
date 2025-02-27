@@ -76,32 +76,6 @@ export async function UpdateClassroom(
   }
 }
 
-export async function DeleteClassroom(id: string) {
-  try {
-    const response = await fetch(`${URL}/api/classrooms/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to delete classroom: ${errorText}`);
-    }
-
-    revalidatePath("/classrooms");
-
-    return {
-      success: true,
-      message: "Aula eliminada exitosamente",
-    };
-  } catch (error) {
-    console.log("Failed to delete classroom:", error);
-    return {
-      success: false,
-      message: "Error al eliminar aula",
-    };
-  }
-}
-
 export async function DeleteClassrooms(ids: string[]) {
   try {
     const response = await fetch(`${URL}/api/classrooms`, {
@@ -117,7 +91,7 @@ export async function DeleteClassrooms(ids: string[]) {
       throw new Error(`Failed to delete classrooms: ${errorText}`);
     }
 
-    revalidatePath("/classrooms");
+    revalidatePath("/school/classrooms");
 
     return {
       success: true,

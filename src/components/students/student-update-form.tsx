@@ -60,7 +60,7 @@ export default function StudentUpdateForm({
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push(`/classrooms/${student.classroomId}/students`);
+          router.push(`/school/classrooms/${student.classroomId}/students`);
         } else {
           toast.error(response.message);
         }
@@ -79,7 +79,7 @@ export default function StudentUpdateForm({
   useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Editar`
+        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Editar`
       )
     );
   }, [dispatch, classroomName, student.firstName, student.lastName]);
@@ -162,7 +162,7 @@ export default function StudentUpdateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href={`/classrooms/${student.classroomId}/students`}>
+                <Link href={`/school/classrooms/${student.classroomId}/students`}>
                   Cancelar
                 </Link>
               </Button>

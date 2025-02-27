@@ -52,7 +52,7 @@ export default function PreceptorUpdateForm({ user }: { user: User }) {
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push("/preceptors");
+          router.push("/school/preceptors");
         } else {
           toast.error(response.message);
         }
@@ -63,7 +63,7 @@ export default function PreceptorUpdateForm({ user }: { user: User }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
-      setBreadcrumb(`Preceptores/${user.firstName} ${user.lastName}/Editar`)
+      setBreadcrumb(`Escuela/Preceptores/${user.firstName} ${user.lastName}/Editar`)
     );
   }, [dispatch, user.firstName, user.lastName]);
 
@@ -164,7 +164,7 @@ export default function PreceptorUpdateForm({ user }: { user: User }) {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/preceptors">Cancelar</Link>
+                <Link href="/school/preceptors">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

@@ -25,8 +25,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 import { AdminsTableToolbar } from "./admins-table-toolbar";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 import { useDispatch } from "react-redux";
@@ -72,7 +70,7 @@ export function AdminsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb("Administradores"));
+    dispatch(setBreadcrumb("Escuela/Administradores"));
   }, [dispatch]);
 
   return (

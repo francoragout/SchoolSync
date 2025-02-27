@@ -26,7 +26,7 @@ export function AdminsTableRowActions<TData>({
       <Tooltip>
         <TooltipTrigger>
           <Button asChild variant="ghost" size="sm">
-            <Link href={`/admins/${user.id}/update`}>
+            <Link href={`/school/admins/${user.id}/update`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

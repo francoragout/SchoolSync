@@ -26,7 +26,7 @@ export function PreceptorsTableRowActions<TData>({
       <Tooltip>
         <TooltipTrigger>
           <Button asChild variant="ghost" size="sm">
-            <Link href={`/preceptors/${user.id}/update`}>
+            <Link href={`/school/preceptors/${user.id}/update`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

@@ -81,7 +81,7 @@ export default function AttendanceUpdateForm({
             toast.success(response.message);
             form.reset();
             router.push(
-              `/classrooms/${classroom.id}/students/${student.id}/attendance`
+              `/school/classrooms/${classroom.id}/students/${student.id}/attendance`
             );
           } else {
             toast.error(response.message);
@@ -102,7 +102,7 @@ export default function AttendanceUpdateForm({
   useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Aulas/${classroomName}/Alumnos/${student.firstName} ${
+        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${
           student.lastName
         }/Asistencia/${format(attendance.date, "PPP", { locale: es })}/Editar`
       )
@@ -222,7 +222,7 @@ export default function AttendanceUpdateForm({
                 disabled={isPending}
               >
                 <Link
-                  href={`/classrooms/${classroom.id}/students/${student.id}/attendance`}
+                  href={`/school/classrooms/${classroom.id}/students/${student.id}/attendance`}
                 >
                   Cancelar
                 </Link>

@@ -28,9 +28,6 @@ import { DataTablePagination } from "@/components/data-table-pagination";
 import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
-// import { ClassroomsTableToolbar } from "./classrooms-table-toolbar";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setPathname } from "@/lib/features/pathname/pathnameSlice";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,7 +70,7 @@ export function ClassroomsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb("Aulas"));
+    dispatch(setBreadcrumb("Escuela/Aulas"));
   }, [dispatch]);
 
   return (

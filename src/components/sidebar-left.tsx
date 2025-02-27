@@ -29,11 +29,11 @@ const data = {
       items: [
         {
           title: "Administradores",
-          url: "/admins",
+          url: "/school/admins",
         },
         {
           title: "Preceptores",
-          url: "/preceptors",
+          url: "/school/preceptors",
         },
       ],
     },
@@ -42,7 +42,7 @@ const data = {
       items: [
         {
           title: "Aulas",
-          url: "/classrooms",
+          url: "/school/classrooms",
         },
       ],
     },
@@ -59,7 +59,7 @@ export function SidebarLeft({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
+              <Link href="/school">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <GalleryVerticalEnd className="size-4" />
                 </div>

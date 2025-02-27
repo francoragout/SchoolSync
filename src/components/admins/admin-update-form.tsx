@@ -52,7 +52,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push("/admins");
+          router.push("/school/admins");
         } else {
           toast.error(response.message);
         }
@@ -62,7 +62,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb(`Administradores/${user.firstName} ${user.lastName}/Editar`));
+    dispatch(setBreadcrumb(`Escuela/Administradores/${user.firstName} ${user.lastName}/Editar`));
   }, [dispatch, user.firstName, user.lastName]);
 
   return (
@@ -162,7 +162,7 @@ export default function AdminUpdateForm({ user }: { user: User }) {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/admins">Cancelar</Link>
+                <Link href="/school/admins">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

@@ -90,12 +90,12 @@ export function StudentsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb(`Aulas/${classroomName}/Alumnos`));
+    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Alumnos`));
   }, [dispatch, classroomName]);
 
   return (
     <div className="space-y-4">
-      <StudentsTableToolbar table={table} classroomId={classroom.id ?? ""} />
+      <StudentsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

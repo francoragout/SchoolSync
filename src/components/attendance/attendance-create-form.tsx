@@ -73,7 +73,7 @@ export default function AttendanceCreateForm({
           toast.success(response.message);
           form.reset();
           router.push(
-            `/classrooms/${classroom.id}/students/${student.id}/attendance`
+            `/school/classrooms/${classroom.id}/students/${student.id}/attendance`
           );
         } else {
           toast.error(response.message);
@@ -93,7 +93,7 @@ export default function AttendanceCreateForm({
   useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia/Crear`
+        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Asistencia/Crear`
       )
     );
   }, [dispatch, classroomName, student.firstName, student.lastName]);
@@ -201,7 +201,7 @@ export default function AttendanceCreateForm({
                 disabled={isPending}
               >
                 <Link
-                  href={`/classrooms/${classroom.id}/students/${student.id}/attendance`}
+                  href={`/school/classrooms/${classroom.id}/students/${student.id}/attendance`}
                 >
                   Cancelar
                 </Link>

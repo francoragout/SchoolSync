@@ -11,9 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Calendar, LibraryBig, Pencil, Users } from "lucide-react";
+import { Pencil, Users } from "lucide-react";
 import { ClassroomSchema } from "@/lib/zod";
-
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -45,7 +44,7 @@ export function ClassroomTableRowActions<TData>({
             className="flex justify-start pl-2"
             size="sm"
           >
-            <Link href={`/classrooms/${classroom.id}/students`}>
+            <Link href={`/school/classrooms/${classroom.id}/students`}>
               <Users className="mr-2 h-4 w-4" />
               <span>Alumnos</span>
             </Link>
@@ -57,33 +56,7 @@ export function ClassroomTableRowActions<TData>({
             className="flex justify-start pl-2"
             size="sm"
           >
-            <Link href={`/administration/classrooms/${classroom.id}/students`}>
-              <LibraryBig className="mr-2 h-4 w-4" />
-              <span>Asignaturas</span>
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="ghost"
-            className="flex justify-start pl-2"
-            size="sm"
-          >
-            <Link href={`/administration/classrooms/${classroom.id}/students`}>
-              <Calendar className="mr-2 h-4 w-4" />
-              <span>Examenes</span>
-            </Link>
-          </Button>
-
-          <DropdownMenuSeparator />
-
-          <Button
-            asChild
-            variant="ghost"
-            className="flex justify-start pl-2"
-            size="sm"
-          >
-            <Link href={`/classrooms/${classroom.id}/update`}>
+            <Link href={`/school/classrooms/${classroom.id}/update`}>
               <Pencil className="mr-2 h-4 w-4" />
               <span>Editar</span>
             </Link>

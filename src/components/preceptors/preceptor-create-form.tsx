@@ -50,7 +50,7 @@ export default function PreceptorCreateForm() {
         if (response.success) {
           toast.success(response.message);
           form.reset();
-          router.push("/preceptors");
+          router.push("/school/preceptors");
         } else {
           toast.error(response.message);
         }
@@ -60,7 +60,7 @@ export default function PreceptorCreateForm() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb("Preceptores/Crear"));
+    dispatch(setBreadcrumb("Escuela/Preceptores/Crear"));
   }, [dispatch]);
 
   return (
@@ -160,7 +160,7 @@ export default function PreceptorCreateForm() {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/preceptors">Cancelar</Link>
+                <Link href="/school/preceptors">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

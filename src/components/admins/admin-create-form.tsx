@@ -50,7 +50,7 @@ export default function AdminCreateForm() {
         if (response.success) {
           toast.success(response.message);
           form.reset();
-          router.push("/admins");
+          router.push("/school/admins");
         } else {
           toast.error(response.message);
         }
@@ -60,7 +60,7 @@ export default function AdminCreateForm() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb("Administradores/Crear"));
+    dispatch(setBreadcrumb("Escuela/Administradores/Crear"));
   }, [dispatch]);
 
   return (
@@ -160,7 +160,7 @@ export default function AdminCreateForm() {
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href="/admins">Cancelar</Link>
+                <Link href="/school/admins">Cancelar</Link>
               </Button>
               <Button
                 type="submit"

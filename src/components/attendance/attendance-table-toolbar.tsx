@@ -23,14 +23,10 @@ import { usePathname } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  classroomId: string;
-  studentId: string;
 }
 
 export function AttendanceTableToolbar<TData>({
   table,
-  classroomId,
-  studentId,
 }: DataTableToolbarProps<TData>) {
   const selectedRowsCount = table.getSelectedRowModel().rows.length;
   const pathname = usePathname();
@@ -112,7 +108,7 @@ export function AttendanceTableToolbar<TData>({
 
         <Button size="sm" className="h-8 flex" asChild>
           <Link
-            href={`/classrooms/${classroomId}/students/${studentId}/attendance/create`}
+            href={`${pathname}/create`}
           >
             <PlusCircle className="flex sm:hidden h-4 w-4" />
             <span className="hidden sm:flex">Agregar</span>

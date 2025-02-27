@@ -54,7 +54,7 @@ export default function StudentCreateForm({
         if (response.success) {
           toast.success(response.message);
           form.reset(values);
-          router.push(`/classrooms/${classroom.id}/students`);
+          router.push(`/school/classrooms/${classroom.id}/students`);
         } else {
           toast.error(response.message);
         }
@@ -71,7 +71,7 @@ export default function StudentCreateForm({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb(`Aulas/${classroomName}/Alumnos/Crear`));
+    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Alumnos/Crear`));
   }, [dispatch, classroomName]);
 
   return (
@@ -152,7 +152,7 @@ export default function StudentCreateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href={`/classrooms/${classroom.id}/students`}>
+                <Link href={`/school/classrooms/${classroom.id}/students`}>
                   Cancelar
                 </Link>
               </Button>

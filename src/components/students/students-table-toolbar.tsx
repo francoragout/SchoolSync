@@ -28,12 +28,10 @@ import { es } from "date-fns/locale";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  classroomId: string;
 }
 
 export function StudentsTableToolbar<TData>({
   table,
-  classroomId,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRows = table.getSelectedRowModel().rows;
@@ -271,7 +269,7 @@ export function StudentsTableToolbar<TData>({
         </AlertDialog>
 
         <Button size="sm" className="h-8 flex" asChild>
-          <Link href={`/classrooms/${classroomId}/students/create`}>
+          <Link href={`${pathname}/create`}>
             <PlusCircle className="flex sm:hidden h-4 w-4" />
             <span className="hidden sm:flex">Agregar</span>
           </Link>
