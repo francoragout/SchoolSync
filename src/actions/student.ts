@@ -6,6 +6,25 @@ import { z } from "zod";
 
 const URL = process.env.API_URL;
 
+export async function GetStudent(DNI: string) {
+  try {
+    const response = await fetch(`${URL}/api/students/dni/${DNI}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to get student: ${errorText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Failed to get student:", error);
+    return {
+      success: false,
+      message: "No se encontró el alumno",
+    };
+  }
+}
+
 export async function CreateStudent(
   values: z.infer<typeof StudentSchema>,
   classroomId: string

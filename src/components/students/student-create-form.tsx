@@ -45,6 +45,7 @@ export default function StudentCreateForm({
     defaultValues: {
       firstName: "",
       lastName: "",
+      dni: "",
     },
   });
 
@@ -116,6 +117,25 @@ export default function StudentCreateForm({
                     <FormControl>
                       <Input
                         placeholder="Apellido (requerido)"
+                        {...field}
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="dni"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>DNI</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="DNI (requerido)"
                         {...field}
                         disabled={isPending}
                       />

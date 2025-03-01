@@ -73,7 +73,7 @@ export const StudentsColumns: ColumnDef<Student>[] = [
               </DialogTitle>
             </DialogHeader>
             {image ? (
-              <Image src={image} alt="avatar" width={500} height={500}/>
+              <Image src={image} alt="avatar" width={500} height={500} />
             ) : (
               <div>Imagen no disponible</div>
             )}
@@ -95,6 +95,13 @@ export const StudentsColumns: ColumnDef<Student>[] = [
       <DataTableColumnHeader column={column} title="Nombre" />
     ),
     cell: ({ row }) => <div>{row.getValue("firstName")}</div>,
+  },
+  {
+    accessorKey: "dni",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="DNI" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("dni")}</div>,
   },
   {
     accessorKey: "attendance",

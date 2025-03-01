@@ -50,6 +50,7 @@ export default function StudentUpdateForm({
     defaultValues: {
       firstName: student.firstName,
       lastName: student.lastName,
+      dni: student.dni,
       image: student.image,
     },
   });
@@ -137,6 +138,25 @@ export default function StudentUpdateForm({
 
               <FormField
                 control={form.control}
+                name="dni"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>DNI</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="DNI (requerido)"
+                        {...field}
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="image"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
@@ -162,7 +182,9 @@ export default function StudentUpdateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href={`/school/classrooms/${student.classroomId}/students`}>
+                <Link
+                  href={`/school/classrooms/${student.classroomId}/students`}
+                >
                   Cancelar
                 </Link>
               </Button>
