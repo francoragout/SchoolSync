@@ -1,5 +1,7 @@
-import Searcher from "@/components/searcher";
-
 export default function Page() {
-  return <Searcher />;
+  return (
+    <div>
+      <p>Page</p>
+    </div>
+  );
 }
