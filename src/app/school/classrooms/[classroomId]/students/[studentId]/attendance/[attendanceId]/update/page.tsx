@@ -39,6 +39,14 @@ async function GetStudent(studentId: string): Promise<Student> {
 
   const student = await data.json();
 
+  // Convert string dates to Date objects
+  if (student.attendance) {
+    student.attendance = student.attendance.map((record: Attendance) => ({
+      ...record,
+      date: record.date ? new Date(record.date) : undefined,
+    }));
+  }
+
   return StudentSchema.parse(student);
 }
 

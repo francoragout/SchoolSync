@@ -1,25 +1,23 @@
-import { AttendanceColumns } from "@/components/attendance/attendance-columns";
-import { AttendanceTable } from "@/components/attendance/attendance-table";
-import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
+import TutorUpdateForm from "@/components/tutors/tutor-update-form";
+import { AttendanceSchema, ClassroomSchema, StudentSchema, UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
 const URL = process.env.API_URL;
 
-type Attendance = z.infer<typeof AttendanceSchema>;
+type User = z.infer<typeof UserSchema>;
 
-async function GetAttendance(studentId: string): Promise<Attendance[]> {
-  const data = await fetch(`${URL}/api/attendance/student/${studentId}`, {
+async function GetTutor(tutorId: string): Promise<User> {
+  const data = await fetch(`${URL}/api/users/${tutorId}`, {
     cache: "no-store",
   });
 
-  const attendance = await data.json();
+  const user = await data.json();
+  const userWithDate = {
+    ...user,
+    createdAt: user.createdAt ? new Date(user.createdAt) : undefined,
+  };
 
-  return attendance.map((attendance: Attendance) => {
-    return AttendanceSchema.parse({
-      ...attendance,
-      date: attendance.date ? new Date(attendance.date) : undefined,
-    });
-  });
+  return UserSchema.parse(userWithDate);
 }
 
 type Classroom = z.infer<typeof ClassroomSchema>;
@@ -35,6 +33,7 @@ async function GetClassroom(classroomId: string): Promise<Classroom> {
 }
 
 type Student = z.infer<typeof StudentSchema>;
+type Attendance = z.infer<typeof AttendanceSchema>;
 
 async function GetStudent(studentId: string): Promise<Student> {
   const data = await fetch(`${URL}/api/students/${studentId}`, {
@@ -54,22 +53,27 @@ async function GetStudent(studentId: string): Promise<Student> {
   return StudentSchema.parse(student);
 }
 
-export default async function AttendancePage({
+export default async function AttendanceUpdatePage({
   params,
 }: {
-  params: Promise<{ classroomId: string; studentId: string }>;
+  params: Promise<{
+    classroomId: string;
+    studentId: string;
+    tutorId: string;
+  }>;
 }) {
-  const studentId = (await params).studentId;
   const classroomId = (await params).classroomId;
-  const data = await GetAttendance(studentId);
+  const studentId = (await params).studentId;
+  const tutorId = (await params).tutorId;
+
+  const user = await GetTutor(tutorId);
   const classroom = await GetClassroom(classroomId);
   const student = await GetStudent(studentId);
   return (
-    <AttendanceTable
-      data={data}
-      columns={AttendanceColumns}
+    <TutorUpdateForm
       classroom={classroom}
       student={student}
+      user={user}
     />
   );
 }

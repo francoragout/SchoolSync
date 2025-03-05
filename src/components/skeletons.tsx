@@ -7,7 +7,9 @@ export function TableSkeleton() {
   const pathname = usePathname();
   return (
     <div className="flex flex-col w-full space-y-4">
-      {(pathname === "/school/admins" || pathname === "/school/preceptors") && (
+      {(pathname === "/school/admins" ||
+        pathname === "/school/preceptors" ||
+        pathname.endsWith("/tutors")) && (
         <div className="flex justify-between">
           <Skeleton className="h-[32px] w-[150px] lg:w-[250px]" />
           <Skeleton className="h-[32px] w-[40px] md:w-[78px]" />
@@ -53,13 +55,9 @@ export function TableSkeleton() {
 }
 
 export function FormSkeleton() {
-  return (
-    <Skeleton className="h-[358px] w-full" />
-  );
+  return <Skeleton className="h-[358px] w-full" />;
 }
 
 export function FormSkeletonSM() {
-  return (
-    <Skeleton className="h-[266px] w-full" />
-  );
+  return <Skeleton className="h-[266px] w-full" />;
 }

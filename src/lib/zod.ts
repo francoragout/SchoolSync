@@ -90,11 +90,9 @@ export const StudentSchema = z.object({
     .max(30, {
       message: "El apellido debe tener menos de 30 caracteres",
     }),
-  dni: z.string().length(8, {
-    message: "El DNI es requerido",
-  }),
   image: z.string().nullish(),
   classroomId: z.string().optional(),
   classroom: ClassroomSchema.optional(),
   attendance: z.array(AttendanceSchema).optional(),
+  user: UserSchema.optional(),
 });

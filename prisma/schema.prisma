@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  firstName     String
+  lastName      String
+  name          String?
+  email         String          @unique
+  phone         String?
+  emailVerified DateTime?
+  image         String?
+  role          Role
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  accounts      Account[]
+  classrooms    Classroom[]
+  notifications Notification[]
+  students      UserOnStudent[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Classroom {
+  id        String    @id @default(cuid())
+  grade     Grade
+  division  Division
+  shift     Shift
+  userId    String?
+  updatedAt DateTime  @updatedAt
+  user      User?     @relation(fields: [userId], references: [id])
+  students  Student[]
+
+  @@unique([grade, division, shift])
+}
+
+model Student {
+  id          String          @id @default(cuid())
+  firstName   String
+  lastName    String
+  image       String?
+  classroomId String
+  attendance  Attendance[]
+  classroom   Classroom       @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  users       UserOnStudent[]
+}
+
+model UserOnStudent {
+  userId    String
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, studentId])
+}
+
+model Attendance {
+  id        String   @id @default(cuid())
+  date      DateTime
+  status    Status
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([date, studentId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Grade {
+  FIRST
+  SECOND
+  THIRD
+  FOURTH
+  FIFTH
+  SIXTH
+}
+
+enum Role {
+  ADMIN
+  PRECEPTOR
+  PROFESSOR
+  TUTOR
+}
+
+enum Division {
+  A
+  B
+  C
+  D
+}
+
+enum Shift {
+  MORNING
+  AFTERNOON
+}
+
+enum Status {
+  ABSENT
+  TARDY
+  JUSTIFIED
+}

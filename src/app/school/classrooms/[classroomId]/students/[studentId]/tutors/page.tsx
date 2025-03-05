@@ -1,25 +1,34 @@
-import { AttendanceColumns } from "@/components/attendance/attendance-columns";
-import { AttendanceTable } from "@/components/attendance/attendance-table";
-import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { TutorsColumns } from "@/components/tutors/tutors-columns";
+import { TutorsTable } from "@/components/tutors/tutors-table";
+import {
+  AttendanceSchema,
+  ClassroomSchema,
+  StudentSchema,
+  UserSchema,
+} from "@/lib/zod";
 import { z } from "zod";
 
 const URL = process.env.API_URL;
 
-type Attendance = z.infer<typeof AttendanceSchema>;
+type User = z.infer<typeof UserSchema>;
 
-async function GetAttendance(studentId: string): Promise<Attendance[]> {
-  const data = await fetch(`${URL}/api/attendance/student/${studentId}`, {
+async function GetTutors(studentId: string): Promise<User[]> {
+  const response = await fetch(`${URL}/api/users/student/${studentId}`, {
     cache: "no-store",
   });
 
-  const attendance = await data.json();
+  const users = await response.json();
 
-  return attendance.map((attendance: Attendance) => {
-    return AttendanceSchema.parse({
-      ...attendance,
-      date: attendance.date ? new Date(attendance.date) : undefined,
-    });
-  });
+  const tutors = users.map(
+    (userOnStudent: { user: User }) => userOnStudent.user
+  );
+
+  const tutorsWithDate = tutors.map((tutor: User) => ({
+    ...tutor,
+    createdAt: tutor.createdAt ? new Date(tutor.createdAt) : undefined,
+  }));
+
+  return tutorsWithDate.map((tutor: User) => UserSchema.parse(tutor));
 }
 
 type Classroom = z.infer<typeof ClassroomSchema>;
@@ -35,6 +44,7 @@ async function GetClassroom(classroomId: string): Promise<Classroom> {
 }
 
 type Student = z.infer<typeof StudentSchema>;
+type Attendance = z.infer<typeof AttendanceSchema>;
 
 async function GetStudent(studentId: string): Promise<Student> {
   const data = await fetch(`${URL}/api/students/${studentId}`, {
@@ -54,20 +64,21 @@ async function GetStudent(studentId: string): Promise<Student> {
   return StudentSchema.parse(student);
 }
 
-export default async function AttendancePage({
+export default async function TutorsPage({
   params,
 }: {
   params: Promise<{ classroomId: string; studentId: string }>;
 }) {
   const studentId = (await params).studentId;
   const classroomId = (await params).classroomId;
-  const data = await GetAttendance(studentId);
+
+  const data = await GetTutors(studentId);
   const classroom = await GetClassroom(classroomId);
   const student = await GetStudent(studentId);
   return (
-    <AttendanceTable
+    <TutorsTable
       data={data}
-      columns={AttendanceColumns}
+      columns={TutorsColumns}
       classroom={classroom}
       student={student}
     />

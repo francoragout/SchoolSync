@@ -21,40 +21,53 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { ClassroomSchema, StudentSchema, UserSchema } from "@/lib/zod";
 import { Input } from "@/components/ui/input";
+import { UpdateUser } from "@/actions/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CreateStudent } from "@/actions/student";
-import { divisions, grades, shifts } from "@/constants/data";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { divisions, grades, shifts } from "@/constants/data";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
+type Student = z.infer<typeof StudentSchema>;
+type User = z.infer<typeof UserSchema>;
 
-export default function StudentCreateForm({
-  classroom,
-}: {
+interface TutorCreateFormProps {
   classroom: Classroom;
-}) {
+  student: Student;
+  user: User;
+}
+
+export default function TutorUpdateForm({
+  classroom,
+  student,
+  user,
+}: TutorCreateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof StudentSchema>>({
-    resolver: zodResolver(StudentSchema),
+  const form = useForm<z.infer<typeof UserSchema>>({
+    resolver: zodResolver(UserSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      role: "TUTOR",
     },
   });
 
-  function onSubmit(values: z.infer<typeof StudentSchema>) {
+  function onSubmit(values: z.infer<typeof UserSchema>) {
     startTransition(() => {
-      CreateStudent(values, classroom.id ?? "").then((response) => {
+      UpdateUser(values, user.id ?? "").then((response) => {
         if (response.success) {
           toast.success(response.message);
-          form.reset(values);
-          router.push(`/school/classrooms/${classroom.id}/students`);
+          form.reset();
+          router.push(
+            `/school/classrooms/${classroom.id}/students/${student.id}/tutors`
+          );
         } else {
           toast.error(response.message);
         }
@@ -71,13 +84,17 @@ export default function StudentCreateForm({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Alumnos/Crear`));
-  }, [dispatch, classroomName]);
+    dispatch(
+      setBreadcrumb(
+        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${student.lastName}/Tutores/${user.firstName} ${user.lastName}/Editar`
+      )
+    );
+  }, [dispatch, classroomName, student.firstName, student.lastName, user]);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Crear Alumno</CardTitle>
+        <CardTitle>Editar Tutor</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -127,15 +144,34 @@ export default function StudentCreateForm({
 
               <FormField
                 control={form.control}
-                name="image"
+                name="email"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Imagen URL</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Imagen URL (opcional)"
+                        placeholder="Email (requerido)"
                         {...field}
                         disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Teléfono</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Teléfono (opcional)"
+                        {...field}
+                        disabled={isPending}
+                        type="tel"
                         value={field.value || ""}
                       />
                     </FormControl>
@@ -152,7 +188,9 @@ export default function StudentCreateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link href={`/school/classrooms/${classroom.id}/students`}>
+                <Link
+                  href={`/school/classrooms/${classroom.id}/students/${student.id}/tutors`}
+                >
                   Cancelar
                 </Link>
               </Button>

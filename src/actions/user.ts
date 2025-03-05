@@ -40,6 +40,34 @@ export async function CreateUser(values: z.infer<typeof UserSchema>) {
   }
 }
 
+export async function CreateUserOnStudent(values: z.infer<typeof UserSchema>, studentId: string) {
+  try {
+    const response = await fetch(`${URL}/api/users/student`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...values, studentId }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create user: ${errorText}`);
+    }
+
+    return {
+      success: true,
+      message: "Usuario creado exitosamente",
+    };
+  } catch (error) {
+    console.log("Failed to create user:", error);
+    return {
+      success: false,
+      message: "Error al crear usuario",
+    };
+  }
+}
+
 export async function UpdateUser(
   values: z.infer<typeof UserSchema>,
   id: string
@@ -85,6 +113,36 @@ export async function DeleteUsers(ids: string[], pathname: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ids }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to delete users: ${errorText}`);
+    }
+
+    revalidatePath(pathname);
+
+    return {
+      success: true,
+      message: "Usuarios eliminados exitosamente",
+    };
+  } catch (error) {
+    console.log("Failed to delete users:", error);
+    return {
+      success: false,
+      message: "Error al eliminar usuarios",
+    };
+  }
+}
+
+export async function DeleteUserOnStudent(ids: string[], studentId: string, pathname: string) {
+  try {
+    const response = await fetch(`${URL}/api/users/student`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids, studentId }),
     });
 
     if (!response.ok) {

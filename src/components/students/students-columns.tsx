@@ -97,13 +97,6 @@ export const StudentsColumns: ColumnDef<Student>[] = [
     cell: ({ row }) => <div>{row.getValue("firstName")}</div>,
   },
   {
-    accessorKey: "dni",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="DNI" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("dni")}</div>,
-  },
-  {
     accessorKey: "attendance",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Asistencia" />
