@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { PreceptorsColumns } from "@/components/preceptors/preceptors-columns";
 import { PreceptorsTable } from "@/components/preceptors/preceptors-table";
 import { UserSchema } from "@/lib/zod";
@@ -32,5 +33,7 @@ async function GetPreceptors(): Promise<User[]> {
 
 export default async function PreceptorsPage() {
   const data = await GetPreceptors();
-  return <PreceptorsTable columns={PreceptorsColumns} data={data} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return <PreceptorsTable columns={PreceptorsColumns} data={data} role={role}/>;
 }

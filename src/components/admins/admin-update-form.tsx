@@ -28,10 +28,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { RestrictionAlert } from "../restricted-alert";
 
 type User = z.infer<typeof UserSchema>;
 
-export default function AdminUpdateForm({ user }: { user: User }) {
+interface AdminUpdateFormProps {
+  user: User;
+  role: string;
+}
+
+export default function AdminUpdateForm({ user, role }: AdminUpdateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -62,8 +68,16 @@ export default function AdminUpdateForm({ user }: { user: User }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBreadcrumb(`Escuela/Administradores/${user.firstName} ${user.lastName}/Editar`));
+    dispatch(
+      setBreadcrumb(
+        `Escuela/Administradores/${user.firstName} ${user.lastName}/Editar`
+      )
+    );
   }, [dispatch, user.firstName, user.lastName]);
+
+   if (role !== "ADMIN") {
+      return <RestrictionAlert />;
+    }
 
   return (
     <Card>

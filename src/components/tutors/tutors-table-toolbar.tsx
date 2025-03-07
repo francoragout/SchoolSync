@@ -24,11 +24,13 @@ import { usePathname } from "next/navigation";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   studentId: string;
+  role: string;
 }
 
 export function TutorsTableToolbar<TData>({
   table,
   studentId,
+  role,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRowsCount = table.getSelectedRowModel().rows.length;
@@ -91,13 +93,19 @@ export function TutorsTableToolbar<TData>({
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  ¿Estas completamente seguro?
+                  {role !== "ADMIN" ? (
+                    <span className="text-destructive">
+                      ¡No tienes los permisos para realizar esta acción!
+                    </span>
+                  ) : (
+                    <span>¿Estas completamente seguro?</span>
+                  )}
                 </AlertDialogTitle>
                 <AlertDialogDescription className="flex flex-col space-y-3">
                   <span>
                     Esta acción no se puede deshacer. Esto eliminará
-                    permanentemente los tutores seleccionados y todos los
-                    datos asociados de nuestros servidores.
+                    permanentemente los tutores seleccionados y todos los datos
+                    asociados de nuestros servidores.
                   </span>
 
                   <span className="flex flex-col">
@@ -127,7 +135,10 @@ export function TutorsTableToolbar<TData>({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteSelected}>
+                <AlertDialogAction
+                  onClick={handleDeleteSelected}
+                  disabled={role !== "ADMIN"}
+                >
                   Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>

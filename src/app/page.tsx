@@ -6,11 +6,7 @@ export default async function Page() {
 
   if (session?.user?.role !== "TUTOR") {
     redirect("/school");
+  } else {
+    redirect("/students");
   }
-  
-  return (
-    <div>
-      <p>Page</p>
-    </div>
-  );
 }

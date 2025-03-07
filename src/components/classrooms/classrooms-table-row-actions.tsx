@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Pencil, Users } from "lucide-react";
+import { Calendar, Pencil, Users } from "lucide-react";
 import { ClassroomSchema } from "@/lib/zod";
 
 interface DataTableRowActionsProps<TData> {
@@ -49,6 +49,20 @@ export function ClassroomTableRowActions<TData>({
               <span>Alumnos</span>
             </Link>
           </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            className="flex justify-start pl-2"
+            size="sm"
+          >
+            <Link href={`/school/classrooms/${classroom.id}/exams`}>
+              <Calendar className="mr-2 h-4 w-4" />
+              <span>Examenes</span>
+            </Link>
+          </Button>
+
+          <DropdownMenuSeparator />
 
           <Button
             asChild

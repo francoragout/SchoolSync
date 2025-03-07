@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 import { divisions, grades, shifts } from "@/constants/data";
+import { RestrictionAlert } from "../restricted-alert";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
 type Student = z.infer<typeof StudentSchema>;
@@ -36,11 +37,13 @@ type Student = z.infer<typeof StudentSchema>;
 interface TutorCreateFormProps {
   classroom: Classroom;
   student: Student;
+  role: string;
 }
 
 export default function TutorCreateForm({
   classroom,
   student,
+  role,
 }: TutorCreateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -87,6 +90,10 @@ export default function TutorCreateForm({
       )
     );
   }, [dispatch, classroomName, student.firstName, student.lastName]);
+
+  if (role !== "ADMIN") {
+    return <RestrictionAlert />;
+  }
 
   return (
     <Card>

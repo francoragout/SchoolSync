@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import TutorCreateForm from "@/components/tutors/tutor-create-form";
 import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -46,7 +47,9 @@ export default async function TutorCreatePage({
   const classroomId = (await params).classroomId;
   const classroom = await GetClassroom(classroomId);
   const student = await GetStudent(studentId);
+  const session = await auth();
+  const role = session?.user?.role as string;
   return (
-    <TutorCreateForm classroom={classroom} student={student} />
+    <TutorCreateForm classroom={classroom} student={student} role={role}/>
   );
 }

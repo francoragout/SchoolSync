@@ -23,10 +23,12 @@ import { usePathname } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  role: string;
 }
 
 export function AdminsTableToolbar<TData>({
   table,
+  role,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRowsCount = table.getSelectedRowModel().rows.length;
@@ -89,13 +91,19 @@ export function AdminsTableToolbar<TData>({
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  ¿Estas completamente seguro?
+                  {role !== "ADMIN" ? (
+                    <span className="text-destructive">
+                      ¡No tienes los permisos para realizar esta acción!
+                    </span>
+                  ) : (
+                    <span>¿Estas completamente seguro?</span>
+                  )}
                 </AlertDialogTitle>
                 <AlertDialogDescription className="flex flex-col space-y-3">
                   <span>
                     Esta acción no se puede deshacer. Esto eliminará
-                    permanentemente los administradores seleccionados y todos los datos
-                    asociados de nuestros servidores.
+                    permanentemente los administradores seleccionados y todos
+                    los datos asociados de nuestros servidores.
                   </span>
 
                   <span className="flex flex-col">
@@ -125,7 +133,10 @@ export function AdminsTableToolbar<TData>({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteSelected}>
+                <AlertDialogAction
+                  onClick={handleDeleteSelected}
+                  disabled={role !== "ADMIN"}
+                >
                   Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>

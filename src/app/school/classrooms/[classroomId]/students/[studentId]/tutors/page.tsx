@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { TutorsColumns } from "@/components/tutors/tutors-columns";
 import { TutorsTable } from "@/components/tutors/tutors-table";
 import {
@@ -75,12 +76,15 @@ export default async function TutorsPage({
   const data = await GetTutors(studentId);
   const classroom = await GetClassroom(classroomId);
   const student = await GetStudent(studentId);
+  const session = await auth();
+  const role = session?.user?.role as string;
   return (
     <TutorsTable
       data={data}
       columns={TutorsColumns}
       classroom={classroom}
       student={student}
+      role={role}
     />
   );
 }

@@ -1,9 +1,10 @@
+import { auth } from "@/auth";
 import { AdminsColumns } from "@/components/admins/admins-columns";
 import { AdminsTable } from "@/components/admins/admins-table";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
 
-const URL = process.env.API_URL
+const URL = process.env.API_URL;
 
 type User = z.infer<typeof UserSchema>;
 
@@ -25,5 +26,7 @@ async function GetAdmins(): Promise<User[]> {
 
 export default async function AdminsPage() {
   const data = await GetAdmins();
-  return <AdminsTable columns={AdminsColumns} data={data} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return <AdminsTable columns={AdminsColumns} data={data} role={role}/>;
 }

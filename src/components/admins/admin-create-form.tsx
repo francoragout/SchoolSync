@@ -28,8 +28,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { RestrictionAlert } from "../restricted-alert";
 
-export default function AdminCreateForm() {
+export default function AdminCreateForm({ role }: { role: string }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -62,6 +63,10 @@ export default function AdminCreateForm() {
   useEffect(() => {
     dispatch(setBreadcrumb("Escuela/Administradores/Crear"));
   }, [dispatch]);
+
+  if (role !== "ADMIN") {
+    return <RestrictionAlert />;
+  }
 
   return (
     <Card>

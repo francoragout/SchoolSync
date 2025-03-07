@@ -40,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   classroom: Classroom;
   student: Student;
+  role: string;
 }
 
 export function TutorsTable<TData, TValue>({
@@ -47,6 +48,7 @@ export function TutorsTable<TData, TValue>({
   data,
   classroom,
   student,
+  role
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -96,7 +98,7 @@ export function TutorsTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <TutorsTableToolbar table={table} studentId={student.id ?? ""}/>
+      <TutorsTableToolbar table={table} studentId={student.id ?? ""} role={role}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

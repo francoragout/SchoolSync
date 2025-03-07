@@ -24,7 +24,7 @@ async function GetPreceptors(): Promise<User[]> {
   );
 }
 
-export default async function CreateClassroomPage() {
+export default async function ClassroomCreatePage() {
   const preceptors = await GetPreceptors();
   return <ClassroomCreateForm preceptors={preceptors} />;
 }

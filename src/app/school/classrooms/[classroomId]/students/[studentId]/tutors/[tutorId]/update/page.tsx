@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import TutorUpdateForm from "@/components/tutors/tutor-update-form";
 import { AttendanceSchema, ClassroomSchema, StudentSchema, UserSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -69,11 +70,16 @@ export default async function AttendanceUpdatePage({
   const user = await GetTutor(tutorId);
   const classroom = await GetClassroom(classroomId);
   const student = await GetStudent(studentId);
+
+  const session = await auth();
+  const role = session?.user?.role as string;
+
   return (
     <TutorUpdateForm
       classroom={classroom}
       student={student}
       user={user}
+      role={role}
     />
   );
 }

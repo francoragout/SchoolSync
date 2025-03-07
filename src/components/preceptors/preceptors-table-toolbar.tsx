@@ -23,10 +23,12 @@ import { usePathname } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  role: string;
 }
 
 export function PreceptorsTableToolbar<TData>({
   table,
+  role,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRowsCount = table.getSelectedRowModel().rows.length;
@@ -89,17 +91,23 @@ export function PreceptorsTableToolbar<TData>({
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  ¿Estas completamente seguro?
+                  {role !== "ADMIN" ? (
+                    <span className="text-destructive">
+                      ¡No tienes los permisos para realizar esta acción!
+                    </span>
+                  ) : (
+                    <span>¿Estas completamente seguro?</span>
+                  )}
                 </AlertDialogTitle>
                 <AlertDialogDescription className="flex flex-col space-y-3">
                   <span>
                     Esta acción no se puede deshacer. Esto eliminará
-                    permanentemente los preceptores seleccionados y todos los datos
-                    asociados de nuestros servidores.
+                    permanentemente los preceptores seleccionados y todos los
+                    datos asociados de nuestros servidores.
                   </span>
 
                   <span className="flex flex-col">
-                    Items seleccionados:
+                    Seleccionados:
                     {table.getSelectedRowModel().rows.map((row) => (
                       <span key={row.id} className="text-foreground">
                         {
@@ -125,7 +133,10 @@ export function PreceptorsTableToolbar<TData>({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteSelected}>
+                <AlertDialogAction
+                  onClick={handleDeleteSelected}
+                  disabled={role !== "ADMIN"}
+                >
                   Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>

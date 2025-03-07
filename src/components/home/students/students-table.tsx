@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -25,20 +24,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { PreceptorsTableToolbar } from "./preceptors-table-toolbar";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { StudentsTableToolbar } from "./students-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  role: string;
 }
 
-export function PreceptorsTable<TData, TValue>({
+export function StudentsTable<TData, TValue>({
   columns,
   data,
-  role,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -46,7 +43,12 @@ export function PreceptorsTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {
+      id: "lastName",
+      desc: false,
+    },
+  ]);
 
   const table = useReactTable({
     data,
@@ -72,12 +74,12 @@ export function PreceptorsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb("Escuela/Preceptores"));
+    dispatch(setBreadcrumb(`Alumnos`));
   }, [dispatch]);
 
   return (
     <div className="space-y-4">
-      <PreceptorsTableToolbar table={table} role={role}/>
+      <StudentsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

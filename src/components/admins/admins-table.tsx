@@ -32,11 +32,13 @@ import { useDispatch } from "react-redux";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  role: string;
 }
 
 export function AdminsTable<TData, TValue>({
   columns,
   data,
+  role,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -75,7 +77,7 @@ export function AdminsTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <AdminsTableToolbar table={table} />
+      <AdminsTableToolbar table={table} role={role}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

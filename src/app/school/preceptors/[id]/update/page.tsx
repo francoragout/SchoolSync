@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import PreceptorUpdateForm from "@/components/preceptors/preceptor-update-form";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -27,5 +28,7 @@ export default async function AdminUpdatePage({
 }) {
   const userId = (await params).id;
   const data = await GetAdmin(userId);
-  return <PreceptorUpdateForm user={data} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return <PreceptorUpdateForm user={data} role={role}/>;
 }

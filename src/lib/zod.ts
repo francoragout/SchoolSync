@@ -14,6 +14,8 @@ const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
   message: "Seleccione un estado",
 });
 
+const Role = z.enum(["ADMIN", "PRECEPTOR", "PROFESSOR", "TUTOR"]);
+
 export const UserSchema = z.object({
   id: z.string().optional(),
   firstName: z
@@ -35,7 +37,7 @@ export const UserSchema = z.object({
   email: z.string().email({
     message: "El email no es válido",
   }),
-  role: z.enum(["ADMIN", "PRECEPTOR", "PROFESSOR", "TUTOR"]),
+  role: Role,
   image: z.string().nullish(),
   phone: z.string().nullish(),
   createdAt: z.date().optional(),

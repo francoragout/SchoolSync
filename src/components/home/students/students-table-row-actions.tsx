@@ -10,10 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { StudentSchema } from "@/lib/zod";
 import Link from "next/link";
-import { Calendar, Pencil, Users } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -50,36 +49,6 @@ export function StudentsTableRowActions<TData>({
             >
               <Calendar className="mr-2 h-4 w-4" />
               <span>Asistencia</span>
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="ghost"
-            className="flex justify-start pl-2"
-            size="sm"
-          >
-            <Link
-              href={`/school/classrooms/${student.classroomId}/students/${student.id}/tutors`}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              <span>Tutores</span>
-            </Link>
-          </Button>
-
-          <DropdownMenuSeparator />
-
-          <Button
-            asChild
-            variant="ghost"
-            className="flex justify-start pl-2"
-            size="sm"
-          >
-            <Link
-              href={`/school/classrooms/${student.classroomId}/students/${student.id}/update`}
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-              <span>Editar</span>
             </Link>
           </Button>
         </div>
