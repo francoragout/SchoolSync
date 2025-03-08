@@ -37,13 +37,16 @@ import { CreateClassroom } from "@/actions/classroom";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { RestrictionAlert } from "../restricted-alert";
 
 type User = z.infer<typeof UserSchema>;
 
 export default function ClassroomCreateForm({
   preceptors,
+  role,
 }: {
   preceptors: User[];
+  role: string;
 }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -71,6 +74,10 @@ export default function ClassroomCreateForm({
   useEffect(() => {
     dispatch(setBreadcrumb("Escuela/Aulas/Crear"));
   }, [dispatch]);
+
+  if (role !== "ADMIN") {
+    return <RestrictionAlert />;
+  }
 
   return (
     <Card>

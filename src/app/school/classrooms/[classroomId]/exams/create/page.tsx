@@ -1,5 +1,4 @@
-import { auth } from "@/auth";
-import StudentCreateForm from "@/components/students/student-create-form";
+import ExamCreateForm from "@/components/exams/exam-create-form";
 import { ClassroomSchema } from "@/lib/zod";
 import { z } from "zod";
 
@@ -17,14 +16,12 @@ async function GetClassroom(classroomId: string): Promise<Classroom> {
   return ClassroomSchema.parse(classroom);
 }
 
-export default async function CreateStudentPage({
+export default async function ExamCreatePage({
   params,
 }: {
   params: Promise<{ classroomId: string }>;
 }) {
   const classroomId = (await params).classroomId;
   const classroom = await GetClassroom(classroomId);
-  const session = await auth();
-  const role = session?.user?.role as string;
-  return <StudentCreateForm classroom={classroom} role={role} />;
+  return <ExamCreateForm classroom={classroom} />;
 }

@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { StudentsColumns } from "@/components/students/students-columns";
 import { StudentsTable } from "@/components/students/students-table";
 import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
@@ -46,11 +47,14 @@ export default async function StudentsPage({
   const classroomId = (await params).classroomId;
   const data = await GetStudents(classroomId);
   const classroom = await GetClassroom(classroomId);
+  const session = await auth();
+  const role = session?.user?.role as string;
   return (
     <StudentsTable
       data={data}
       columns={StudentsColumns}
       classroom={classroom}
+      role={role}
     />
   );
 }

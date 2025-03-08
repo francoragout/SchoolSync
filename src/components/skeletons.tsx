@@ -33,6 +33,12 @@ export function TableSkeleton() {
           <Skeleton className="h-[32px] w-[40px] md:w-[78px]" />
         </div>
       )}
+      {pathname.endsWith("/exams") && (
+        <div className="flex justify-between">
+          <Skeleton className="h-[32px] w-[40px] xl:w-[122px]" />
+          <Skeleton className="h-[32px] w-[40px] md:w-[78px]" />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Skeleton className="h-[48px]" />

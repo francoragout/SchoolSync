@@ -32,11 +32,13 @@ import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  role: string;
 }
 
 export function ClassroomsTable<TData, TValue>({
   columns,
   data,
+  role,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -75,7 +77,7 @@ export function ClassroomsTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <ClassroomsTableToolbar table={table} />
+      <ClassroomsTableToolbar table={table} role={role}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

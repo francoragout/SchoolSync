@@ -27,13 +27,8 @@ export default function Notifications() {
       <DropdownMenuContent align="end">
         <div className="flex justify-between items-center space-x-4">
           <DropdownMenuLabel>Notificaciónes</DropdownMenuLabel>
-          <Button
-            size="sm"
-            className="h-6 me-2 rounded-full border-primary"
-            
-          >
-            
-            <EyeIcon className="h-4 w-4"/>
+          <Button size="sm" className="h-6 me-2 rounded-full border-primary">
+            <EyeIcon className="h-4 w-4" />
           </Button>
         </div>
         <DropdownMenuSeparator />

@@ -28,10 +28,12 @@ import { es } from "date-fns/locale";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  role: string;
 }
 
 export function StudentsTableToolbar<TData>({
   table,
+  role,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRows = table.getSelectedRowModel().rows;
@@ -111,7 +113,13 @@ export function StudentsTableToolbar<TData>({
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  ¿Estas completamente seguro?
+                  {role !== "ADMIN" ? (
+                    <span className="text-destructive">
+                      ¡No tienes los permisos para realizar esta acción!
+                    </span>
+                  ) : (
+                    <span>¿Estas completamente seguro?</span>
+                  )}
                 </AlertDialogTitle>
                 <AlertDialogDescription className="flex flex-col space-y-3">
                   <span>
@@ -121,7 +129,7 @@ export function StudentsTableToolbar<TData>({
                   </span>
 
                   <span className="flex flex-col">
-                    Items seleccionados:
+                    Seleccionados:
                     {table.getSelectedRowModel().rows.map((row) => (
                       <span key={row.id} className="text-foreground">
                         {
@@ -147,7 +155,10 @@ export function StudentsTableToolbar<TData>({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteSelected}>
+                <AlertDialogAction
+                  onClick={handleDeleteSelected}
+                  disabled={role !== "ADMIN"}
+                >
                   Continuar
                 </AlertDialogAction>
               </AlertDialogFooter>

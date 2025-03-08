@@ -29,6 +29,7 @@ import { UpdateStudent } from "@/actions/student";
 import { divisions, grades, shifts } from "@/constants/data";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { RestrictionAlert } from "../restricted-alert";
 
 type Student = z.infer<typeof StudentSchema>;
 type Classroom = z.infer<typeof ClassroomSchema>;
@@ -36,11 +37,13 @@ type Classroom = z.infer<typeof ClassroomSchema>;
 interface StudentUpdateFormProps {
   student: Student;
   classroom: Classroom;
+  role: string;
 }
 
 export default function StudentUpdateForm({
   student,
   classroom,
+  role,
 }: StudentUpdateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -53,6 +56,10 @@ export default function StudentUpdateForm({
       image: student.image,
     },
   });
+
+  const {
+    formState: { isDirty },
+  } = form;
 
   function onSubmit(values: z.infer<typeof StudentSchema>) {
     startTransition(() => {
@@ -83,6 +90,10 @@ export default function StudentUpdateForm({
       )
     );
   }, [dispatch, classroomName, student.firstName, student.lastName]);
+
+  if (role !== "ADMIN") {
+    return <RestrictionAlert />;
+  }
 
   return (
     <Card>
@@ -172,7 +183,7 @@ export default function StudentUpdateForm({
                 type="submit"
                 size="sm"
                 className="h-8"
-                disabled={isPending}
+                disabled={isPending || !isDirty}
               >
                 Guardar
               </Button>

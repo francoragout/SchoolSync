@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import ClassroomCreateForm from "@/components/classrooms/classroom-create-form";
 import { UserSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -26,5 +27,7 @@ async function GetPreceptors(): Promise<User[]> {
 
 export default async function ClassroomCreatePage() {
   const preceptors = await GetPreceptors();
-  return <ClassroomCreateForm preceptors={preceptors} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return <ClassroomCreateForm preceptors={preceptors} role={role} />;
 }

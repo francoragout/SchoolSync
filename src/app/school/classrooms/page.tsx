@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { ClassroomsColumns } from "@/components/classrooms/classrooms-columns";
 import { ClassroomsTable } from "@/components/classrooms/classrooms-table";
 import { ClassroomSchema } from "@/lib/zod";
@@ -24,5 +25,9 @@ async function GetClassrooms(): Promise<Classroom[]> {
 
 export default async function ClassroomsPage() {
   const data = await GetClassrooms();
-  return <ClassroomsTable columns={ClassroomsColumns} data={data} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return (
+    <ClassroomsTable columns={ClassroomsColumns} data={data} role={role} />
+  );
 }

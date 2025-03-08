@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import ClassroomUpdateForm from "@/components/classrooms/classroom-update-form";
 import { ClassroomSchema, UserSchema } from "@/lib/zod";
 import { z } from "zod";
@@ -43,5 +44,7 @@ export default async function ClassroomUpdatePage({
   const classroomId = (await params).classroomId;
   const classroom = await GetClassroom(classroomId);
   const preceptors = await GetPreceptors();
-  return <ClassroomUpdateForm classroom={classroom} preceptors={preceptors}/>;
+  const session = await auth();
+    const role = session?.user?.role as string;
+  return <ClassroomUpdateForm classroom={classroom} preceptors={preceptors} role={role} />;
 }

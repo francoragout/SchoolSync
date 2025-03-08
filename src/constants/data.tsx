@@ -122,3 +122,46 @@ export const shortShifts = [
     label: "T",
   },
 ];
+
+export const subjects = [
+  {
+    value: "MATH",
+    label: "Matemáticas",
+  },
+  {
+    value: "LITERATURE",
+    label: "Literatura",
+  },
+  {
+    value: "HISTORY",
+    label: "Historia",
+  },
+  {
+    value: "GEOGRAPHY",
+    label: "Geografía",
+  },
+  {
+    value: "BIOLOGY",
+    label: "Biología",
+  },
+  {
+    value: "PHYSICS",
+    label: "Física",
+  },
+  {
+    value: "CHEMISTRY",
+    label: "Química",
+  },
+  {
+    value: "ENGLISH",
+    label: "Inglés",
+  },
+  {
+    value: "PHYSICAL_EDUCATION",
+    label: "Educación Física",
+  },
+  {
+    value: "RELIGION",
+    label: "Religión",
+  },
+];

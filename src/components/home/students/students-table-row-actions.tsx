@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StudentSchema } from "@/lib/zod";
 import Link from "next/link";
-import { Calendar } from "lucide-react";
+import { Calendar, Hand } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -45,10 +45,23 @@ export function StudentsTableRowActions<TData>({
             size="sm"
           >
             <Link
-              href={`/school/classrooms/${student.classroomId}/students/${student.id}/attendance`}
+              href={`/students/${student.id}/attendance`}
+            >
+          <Hand className="mr-2 h-4 w-4" />
+              <span>Asistencia</span>
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="flex justify-start pl-2"
+            size="sm"
+          >
+            <Link
+              href={`/students/${student.id}/exams`}
             >
               <Calendar className="mr-2 h-4 w-4" />
-              <span>Asistencia</span>
+              <span>Examenes</span>
             </Link>
           </Button>
         </div>

@@ -1,10 +1,12 @@
+import { auth } from "@/auth";
 import StudentUpdateForm from "@/components/students/student-update-form";
-import { ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { z } from "zod";
 
 const URL = process.env.API_URL;
 
 type Student = z.infer<typeof StudentSchema>;
+type Attendance = z.infer<typeof AttendanceSchema>;
 
 async function GetStudent(studentId: string): Promise<Student> {
   const data = await fetch(`${URL}/api/students/${studentId}`, {
@@ -12,6 +14,14 @@ async function GetStudent(studentId: string): Promise<Student> {
   });
 
   const student = await data.json();
+
+  // Convert string dates to Date objects
+  if (student.attendance) {
+    student.attendance = student.attendance.map((record: Attendance) => ({
+      ...record,
+      date: record.date ? new Date(record.date) : undefined,
+    }));
+  }
 
   return StudentSchema.parse(student);
 }
@@ -37,5 +47,9 @@ export default async function StudentUpdatePage({
   const classroomId = (await params).classroomId;
   const student = await GetStudent(studentId);
   const classroom = await GetClassroom(classroomId);
-  return <StudentUpdateForm student={student} classroom={classroom} />;
+  const session = await auth();
+  const role = session?.user?.role as string;
+  return (
+    <StudentUpdateForm student={student} classroom={classroom} role={role} />
+  );
 }

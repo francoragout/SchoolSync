@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -24,29 +23,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { StudentsTableToolbar } from "./students-table-toolbar";
-import { z } from "zod";
 import { ClassroomSchema } from "@/lib/zod";
+import { z } from "zod";
 import { divisions, grades, shifts } from "@/constants/data";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { ExamsTableToolbar } from "./exams-table-toolbar";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   classroom: Classroom;
-  role: string;
 }
 
-export function StudentsTable<TData, TValue>({
+export function ExamsTable<TData, TValue>({
   columns,
   data,
   classroom,
-  role,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -56,7 +51,7 @@ export function StudentsTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([
     {
-      id: "lastName",
+      id: "date",
       desc: false,
     },
   ]);
@@ -92,12 +87,12 @@ export function StudentsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Alumnos`));
+    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Exámenes`));
   }, [dispatch, classroomName]);
 
   return (
     <div className="space-y-4">
-      <StudentsTableToolbar table={table} role={role}/>
+      <ExamsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

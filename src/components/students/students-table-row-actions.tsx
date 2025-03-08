@@ -13,7 +13,7 @@ import {
 
 import { StudentSchema } from "@/lib/zod";
 import Link from "next/link";
-import { Calendar, Pencil, Users } from "lucide-react";
+import { Hand, Pencil, Users } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -48,7 +48,7 @@ export function StudentsTableRowActions<TData>({
             <Link
               href={`/school/classrooms/${student.classroomId}/students/${student.id}/attendance`}
             >
-              <Calendar className="mr-2 h-4 w-4" />
+              <Hand className="mr-2 h-4 w-4" />
               <span>Asistencia</span>
             </Link>
           </Button>

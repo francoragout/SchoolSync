@@ -37,6 +37,7 @@ import { UpdateClassroom } from "@/actions/classroom";
 import Link from "next/link";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
 import { useDispatch } from "react-redux";
+import { RestrictionAlert } from "../restricted-alert";
 
 type User = z.infer<typeof UserSchema>;
 type Classroom = z.infer<typeof ClassroomSchema>;
@@ -44,11 +45,13 @@ type Classroom = z.infer<typeof ClassroomSchema>;
 interface ClassroomUpdateFormProps {
   classroom: Classroom;
   preceptors: User[];
+  role: string;
 }
 
 export default function ClassroomUpdateForm({
   classroom,
   preceptors,
+  role,
 }: ClassroomUpdateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -62,6 +65,10 @@ export default function ClassroomUpdateForm({
       userId: classroom.userId,
     },
   });
+
+  const {
+    formState: { isDirty },
+  } = form;
 
   function onSubmit(values: z.infer<typeof ClassroomSchema>) {
     startTransition(() => {
@@ -88,6 +95,10 @@ export default function ClassroomUpdateForm({
   useEffect(() => {
     dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Editar`));
   }, [dispatch, classroomName]);
+
+  if (role !== "ADMIN") {
+    return <RestrictionAlert />;
+  }
 
   return (
     <Card>
@@ -268,7 +279,7 @@ export default function ClassroomUpdateForm({
                 type="submit"
                 size="sm"
                 className="h-8"
-                disabled={isPending}
+                disabled={isPending || !isDirty}
               >
                 Guardar
               </Button>

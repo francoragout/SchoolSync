@@ -34,64 +34,49 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { AttendanceSchema, ClassroomSchema, StudentSchema } from "@/lib/zod";
+import { ClassroomSchema, ExamSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
-import { divisions, grades, shifts, statuses } from "@/constants/data";
+import { divisions, grades, shifts, subjects } from "@/constants/data";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
-import { UpdateAttendance } from "@/actions/attendance";
 import { Calendar } from "../ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { Input } from "../ui/input";
+import { CreateExam } from "@/actions/exam";
 
-type Student = z.infer<typeof StudentSchema>;
 type Classroom = z.infer<typeof ClassroomSchema>;
-type Attendance = z.infer<typeof AttendanceSchema>;
 
 interface AttendanceCreateFormProps {
   classroom: Classroom;
-  student: Student;
-  attendance: Attendance;
 }
 
-export default function AttendanceUpdateForm({
+export default function ExamCreateForm({
   classroom,
-  student,
-  attendance,
 }: AttendanceCreateFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof AttendanceSchema>>({
-    resolver: zodResolver(AttendanceSchema),
+  const form = useForm<z.infer<typeof ExamSchema>>({
+    resolver: zodResolver(ExamSchema),
     defaultValues: {
-      date: attendance.date,
-      status: attendance.status,
+      time: "00:00",
     },
   });
 
-  const {
-    formState: { isDirty },
-  } = form;
-
-  function onSubmit(values: z.infer<typeof AttendanceSchema>) {
+  function onSubmit(values: z.infer<typeof ExamSchema>) {
     startTransition(() => {
-      UpdateAttendance(values, student.id ?? "", attendance.id ?? "").then(
-        (response) => {
-          if (response.success) {
-            toast.success(response.message);
-            form.reset();
-            router.push(
-              `/school/classrooms/${classroom.id}/students/${student.id}/attendance`
-            );
-          } else {
-            toast.error(response.message);
-          }
+      CreateExam(values, classroom.id ?? "").then((response) => {
+        if (response.success) {
+          toast.success(response.message);
+          router.push(`/school/classrooms/${classroom.id}/exams`);
+        } else {
+          toast.error(response.message);
         }
-      );
+      });
     });
   }
 
@@ -104,25 +89,13 @@ export default function AttendanceUpdateForm({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      setBreadcrumb(
-        `Escuela/Aulas/${classroomName}/Alumnos/${student.firstName} ${
-          student.lastName
-        }/Asistencia/${format(attendance.date, "PPP", { locale: es })}/Editar`
-      )
-    );
-  }, [
-    dispatch,
-    classroomName,
-    student.firstName,
-    student.lastName,
-    attendance.date,
-  ]);
+    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Exámenes/Crear`));
+  }, [dispatch, classroomName]);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Editar Asistencia</CardTitle>
+        <CardTitle>Crear Examen</CardTitle>
         <CardDescription>
           Utilice Tabs para navegar más rápido entre los campos.
         </CardDescription>
@@ -134,6 +107,41 @@ export default function AttendanceUpdateForm({
             className="flex flex-col gap-4"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <FormField
+                control={form.control}
+                name="subject"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Asignatura</FormLabel>
+                    <Select onValueChange={field.onChange} disabled={isPending}>
+                      <FormControl>
+                        <SelectTrigger
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <SelectValue placeholder="Seleccionar estado (requerido)" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {subjects.map((subject) => (
+                            <SelectItem
+                              key={subject.value}
+                              value={subject.value}
+                            >
+                              {subject.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="date"
@@ -169,7 +177,7 @@ export default function AttendanceUpdateForm({
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
+                            date < new Date(new Date().setHours(0, 0, 0, 0))
                           }
                           initialFocus
                         />
@@ -183,35 +191,32 @@ export default function AttendanceUpdateForm({
 
               <FormField
                 control={form.control}
-                name="status"
+                name="time"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Estado</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      disabled={isPending}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger
-                          className={cn(
-                            "pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          <SelectValue placeholder="Seleccionar estado (requerido)" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {statuses.map((status) => (
-                            <SelectItem key={status.value} value={status.value}>
-                              {status.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Hora</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="time" disabled={isPending} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="note"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Nota</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="Nota (opcional)"
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -225,9 +230,7 @@ export default function AttendanceUpdateForm({
                 className="h-8"
                 disabled={isPending}
               >
-                <Link
-                  href={`/school/classrooms/${classroom.id}/students/${student.id}/attendance`}
-                >
+                <Link href={`/school/classrooms/${classroom.id}/exams`}>
                   Cancelar
                 </Link>
               </Button>
@@ -235,7 +238,7 @@ export default function AttendanceUpdateForm({
                 type="submit"
                 size="sm"
                 className="h-8"
-                disabled={isPending || !isDirty}
+                disabled={isPending}
               >
                 Guardar
               </Button>

@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -24,29 +23,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { StudentsTableToolbar } from "./students-table-toolbar";
+import { ClassroomSchema, StudentSchema } from "@/lib/zod";
 import { z } from "zod";
-import { ClassroomSchema } from "@/lib/zod";
 import { divisions, grades, shifts } from "@/constants/data";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
+import { AttendanceTableToolbar } from "./attendance-table-toolbar";
 
 type Classroom = z.infer<typeof ClassroomSchema>;
-
+type Student = z.infer<typeof StudentSchema>;
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   classroom: Classroom;
-  role: string;
+  student: Student;
 }
 
-export function StudentsTable<TData, TValue>({
+export function AttendanceTable<TData, TValue>({
   columns,
   data,
   classroom,
-  role,
+  student,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -54,12 +52,10 @@ export function StudentsTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [sorting, setSorting] = React.useState<SortingState>([
-    {
-      id: "lastName",
-      desc: false,
-    },
-  ]);
+  const [sorting, setSorting] = React.useState<SortingState>([{
+    id: "date",
+    desc: true,
+  }]);
 
   const table = useReactTable({
     data,
@@ -92,12 +88,18 @@ export function StudentsTable<TData, TValue>({
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setBreadcrumb(`Escuela/Aulas/${classroomName}/Alumnos`));
-  }, [dispatch, classroomName]);
+    dispatch(
+      setBreadcrumb(
+        `Alumnos/${student.firstName} ${student.lastName}/Asistencia`
+      )
+    );
+  }, [dispatch, classroomName, student.firstName, student.lastName]);
 
   return (
     <div className="space-y-4">
-      <StudentsTableToolbar table={table} role={role}/>
+      <AttendanceTableToolbar
+        table={table}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

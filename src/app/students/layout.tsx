@@ -3,14 +3,14 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { SidebarLeft } from "@/components/sidebar-left";
-import { SidebarRight } from "@/components/sidebar-right";
 import BreadcrumbDinamic from "@/components/breadcrumb-dinamic";
 import { Separator } from "@/components/ui/separator";
 import Notifications from "@/components/notifications";
 import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
+import { SidebarLeft } from "@/components/home/sidebar-left";
+import { SidebarRight } from "@/components/home/sidebar-right";
 import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export default async function SchoolLayout({
   children,
@@ -18,8 +18,8 @@ export default async function SchoolLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  if (session?.user?.role === "TUTOR") {
-    redirect("/students");
+  if (session?.user?.role !== "TUTOR") {
+    redirect("/school");
   }
   return (
     <SessionProvider>

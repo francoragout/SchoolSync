@@ -10,6 +10,7 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -21,6 +22,10 @@ import {
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { NavUser } from "./nav-user";
+import { DropdownMenuSeparator } from "./ui/dropdown-menu";
+import { Calendar } from "./ui/calendar";
+import { es } from "date-fns/locale";
 
 const data = {
   navMain: [
@@ -53,6 +58,8 @@ export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const today = new Date();
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -70,9 +77,13 @@ export function SidebarLeft({
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <DropdownMenuSeparator />
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="gap-0">
+      <SidebarContent>
+        <div className="mx-auto">
+          <Calendar selected={today} locale={es} />
+        </div>
         {data.navMain.map((item) => (
           <Collapsible
             key={item.title}
@@ -110,6 +121,11 @@ export function SidebarLeft({
           </Collapsible>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <div className="lg:hidden">
+          <NavUser />
+        </div>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

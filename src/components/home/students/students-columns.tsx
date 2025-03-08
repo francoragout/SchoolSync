@@ -13,40 +13,14 @@ import { StudentsTableRowActions } from "./students-table-row-actions";
 import { z } from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AttendanceSchema, StudentSchema } from "@/lib/zod";
-
 import { PersonIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 
 type Student = z.infer<typeof StudentSchema>;
 type Attendance = z.infer<typeof AttendanceSchema>;
 
 export const StudentsColumns: ColumnDef<Student>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "image",
     header: () => <div className="sr-only">Image</div>,

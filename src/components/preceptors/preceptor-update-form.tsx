@@ -55,6 +55,10 @@ export default function PreceptorUpdateForm({
     },
   });
 
+  const {
+    formState: { isDirty },
+  } = form;
+
   function onSubmit(values: z.infer<typeof UserSchema>) {
     startTransition(() => {
       UpdateUser(values, user.id ?? "").then((response) => {
@@ -185,7 +189,7 @@ export default function PreceptorUpdateForm({
                 type="submit"
                 size="sm"
                 className="h-8"
-                disabled={isPending}
+                disabled={isPending || !isDirty}
               >
                 Guardar
               </Button>

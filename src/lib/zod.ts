@@ -16,6 +16,24 @@ const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
 
 const Role = z.enum(["ADMIN", "PRECEPTOR", "PROFESSOR", "TUTOR"]);
 
+const Subject = z.enum(
+  [
+    "MATH",
+    "LITERATURE",
+    "HISTORY",
+    "GEOGRAPHY",
+    "BIOLOGY",
+    "PHYSICS",
+    "CHEMISTRY",
+    "ENGLISH",
+    "PHYSICAL_EDUCATION",
+    "RELIGION",
+  ],
+  {
+    message: "Seleccione una materia",
+  }
+);
+
 export const UserSchema = z.object({
   id: z.string().optional(),
   firstName: z
@@ -97,4 +115,15 @@ export const StudentSchema = z.object({
   classroom: ClassroomSchema.optional(),
   attendance: z.array(AttendanceSchema).optional(),
   user: UserSchema.optional(),
+});
+
+export const ExamSchema = z.object({
+  id: z.string().optional(),
+  subject: Subject,
+  date: z.date({ required_error: "Seleccione una fecha" }),
+  time: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Seleccione una hora"),
+  note: z.string().nullish(),
+  classroomId: z.string().optional(),
 });
