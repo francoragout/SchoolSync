@@ -48,30 +48,48 @@ export default function BreadcrumbDinamic() {
           const hasSpace = translatedSegment.includes(" ");
           const isTutors = segment === "tutors";
           const isAttendance = segment === "attendance";
+          const isExams = segment === "exams";
+
+          const getDropdownItems = (segment: string) => {
+            const items = [];
+            if (segment === "tutors") {
+              items.push({ href: "/attendance", label: "Asistencia" });
+              items.push({ href: "/exams", label: "Exámenes" });
+            } else if (segment === "attendance") {
+              items.push({ href: "/tutors", label: "Tutores" });
+              items.push({ href: "/exams", label: "Exámenes" });
+            } else if (segment === "exams") {
+              items.push({ href: "/tutors", label: "Tutores" });
+              items.push({ href: "/attendance", label: "Asistencia" });
+            }
+            return items;
+          };
 
           return (
             <React.Fragment key={index}>
               <BreadcrumbItem>
-                {isLast && (isTutors || isAttendance) ? (
+                {isLast && (isTutors || isAttendance || isExams) ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center gap-1">
                       {translatedSegment}
                       <ChevronDownIcon className="text-primary" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start">
-                      <DropdownMenuItem>
-                        <BreadcrumbLink asChild>
-                          <Link
-                            className="w-full"
-                            href={`${pathname.replace(
-                              /\/(tutors|attendance)$/,
-                              isTutors ? "/attendance" : "/tutors"
-                            )}`}
-                          >
-                            {isTutors ? "Asistencia" : "Tutores"}
-                          </Link>
-                        </BreadcrumbLink>
-                      </DropdownMenuItem>
+                      {getDropdownItems(segment).map((item) => (
+                        <DropdownMenuItem key={item.href}>
+                          <BreadcrumbLink asChild>
+                            <Link
+                              className="w-full"
+                              href={`${pathname.replace(
+                                /\/(tutors|attendance|exams)$/,
+                                item.href
+                              )}`}
+                            >
+                              {item.label}
+                            </Link>
+                          </BreadcrumbLink>
+                        </DropdownMenuItem>
+                      ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : isFirst || isLast || hasSpace ? (

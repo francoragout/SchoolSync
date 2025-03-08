@@ -67,3 +67,39 @@ export function FormSkeleton() {
 export function FormSkeletonSM() {
   return <Skeleton className="h-[266px] w-full" />;
 }
+
+export function TableStudentsSkeleton() {
+  const pathname = usePathname();
+  return (
+    <div className="flex flex-col w-full space-y-4">
+      {(pathname === "/students" || pathname.endsWith("/tutors")) && (
+        <Skeleton className="h-[32px] w-[150px] lg:w-[250px]" />
+      )}
+
+      {pathname.endsWith("/attendance") && (
+        <Skeleton className="h-[32px] w-[40px] lg:w-[96px]" />
+      )}
+
+      {pathname.endsWith("/exams") && (
+        <Skeleton className="h-[32px] w-[40px] lg:w-[122px]" />
+      )}
+
+      <div className="space-y-2">
+        <Skeleton className="h-[48px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+        <Skeleton className="h-[57px]" />
+      </div>
+      <div className="flex justify-end">
+        <Skeleton className="h-[32px] w-[493px]" />
+      </div>
+    </div>
+  );
+}

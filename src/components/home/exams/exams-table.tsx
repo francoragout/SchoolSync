@@ -28,19 +28,19 @@ import { StudentSchema } from "@/lib/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
-import { AttendanceTableToolbar } from "./attendance-table-toolbar";
+import { ExamsTableToolbar } from "./exams-table-toolbar";
 
 type Student = z.infer<typeof StudentSchema>;
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   student: Student;
 }
 
-export function AttendanceTable<TData, TValue>({
+export function ExamsTable<TData, TValue>({
   columns,
   data,
-
   student,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -52,7 +52,7 @@ export function AttendanceTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([
     {
       id: "date",
-      desc: true,
+      desc: false,
     },
   ]);
 
@@ -81,15 +81,13 @@ export function AttendanceTable<TData, TValue>({
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(
-      setBreadcrumb(
-        `Alumnos/${student.firstName} ${student.lastName}/Asistencia`
-      )
+      setBreadcrumb(`Alumnos/${student.firstName} ${student.lastName}/Exámenes`)
     );
-  }, [dispatch, student.firstName, student.lastName]);
+  }, [dispatch, student]);
 
   return (
     <div className="space-y-4">
-      <AttendanceTableToolbar table={table} />
+      <ExamsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

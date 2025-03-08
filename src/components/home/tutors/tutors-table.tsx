@@ -15,6 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
 import {
   Table,
   TableBody,
@@ -24,23 +25,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table-pagination";
-import { StudentSchema } from "@/lib/zod";
-import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from "@/lib/features/breadcrumb/breadcrumbSlice";
-import { AttendanceTableToolbar } from "./attendance-table-toolbar";
+import { z } from "zod";
+import { StudentSchema } from "@/lib/zod";
+import { TutorsTableToolbar } from "./tutors-table-toolbar";
 
 type Student = z.infer<typeof StudentSchema>;
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   student: Student;
 }
 
-export function AttendanceTable<TData, TValue>({
+export function TutorsTable<TData, TValue>({
   columns,
   data,
-
   student,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -49,12 +50,7 @@ export function AttendanceTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [sorting, setSorting] = React.useState<SortingState>([
-    {
-      id: "date",
-      desc: true,
-    },
-  ]);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -82,14 +78,14 @@ export function AttendanceTable<TData, TValue>({
   React.useEffect(() => {
     dispatch(
       setBreadcrumb(
-        `Alumnos/${student.firstName} ${student.lastName}/Asistencia`
+        `/Alumnos/${student.firstName} ${student.lastName}/Tutores`
       )
     );
-  }, [dispatch, student.firstName, student.lastName]);
+  }, [dispatch, student]);
 
   return (
     <div className="space-y-4">
-      <AttendanceTableToolbar table={table} />
+      <TutorsTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
