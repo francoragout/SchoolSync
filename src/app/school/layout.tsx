@@ -11,6 +11,25 @@ import Notifications from "@/components/notifications";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { z } from "zod";
+import { NotificationSchema } from "@/lib/zod";
+
+const URL = process.env.API_URL;
+
+type Notification = z.infer<typeof NotificationSchema>;
+
+async function GetNotifications(userId: string): Promise<Notification[]> {
+  const data = await fetch(`${URL}/api/notifications/user/${userId}`, {
+    cache: "no-store",
+  });
+
+  const notifications = await data.json();
+
+  return notifications.map((notification: Notification) => {
+    notification.createdAt = new Date(notification.createdAt);
+    return NotificationSchema.parse(notification);
+  });
+}
 
 export default async function SchoolLayout({
   children,
@@ -21,8 +40,12 @@ export default async function SchoolLayout({
   if (session?.user?.role === "TUTOR") {
     redirect("/students");
   }
+
+  const userId = session?.user?.id as string;
+  const notifications = await GetNotifications(userId);
+
   return (
-    <SessionProvider>
+    <SessionProvider >
       <SidebarProvider>
         <SidebarLeft />
         <SidebarInset className="overflow-x-auto">
@@ -33,7 +56,7 @@ export default async function SchoolLayout({
               <BreadcrumbDinamic />
             </div>
             <div className="flex justify-end px-3">
-              <Notifications />
+              <Notifications notifications={notifications} userId={userId} />
             </div>
           </header>
           <div className="gap-4 p-4">{children}</div>

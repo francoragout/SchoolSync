@@ -83,7 +83,6 @@ export function NavUser() {
                 <SignOut />
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

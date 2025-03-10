@@ -48,7 +48,13 @@ export default function BreadcrumbDinamic() {
           const hasSpace = translatedSegment.includes(" ");
           const isTutors = segment === "tutors";
           const isAttendance = segment === "attendance";
-          const isExams = segment === "exams";
+          let isExams;
+
+          if (pathname.startsWith("/students")) {
+            isExams = segment === "exams";
+          } else {
+            isExams = false;
+          }
 
           const getDropdownItems = (segment: string) => {
             const items = [];

@@ -14,7 +14,7 @@ export function SidebarRight({
       className="sticky hidden lg:flex top-0 h-svh border-l"
       {...props}
     >
-      <SidebarHeader className="h-16 border-b border-sidebar-border">
+      <SidebarHeader className="h-16 border-b">
         <NavUser />
       </SidebarHeader>
     </Sidebar>

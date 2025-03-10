@@ -14,7 +14,7 @@ const Status = z.enum(["ABSENT", "TARDY", "JUSTIFIED"], {
   message: "Seleccione un estado",
 });
 
-const Role = z.enum(["ADMIN", "PRECEPTOR", "PROFESSOR", "TUTOR"]);
+const Role = z.enum(["ADMIN", "PRECEPTOR", "TUTOR"]);
 
 const Subject = z.enum(
   [
@@ -81,6 +81,7 @@ export const ClassroomSchema = z.object({
   _count: z
     .object({
       students: z.number().optional(),
+      exams: z.number().optional(),
     })
     .optional(),
 });
@@ -126,4 +127,14 @@ export const ExamSchema = z.object({
     .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Seleccione una hora"),
   note: z.string().nullish(),
   classroomId: z.string().optional(),
+});
+
+export const NotificationSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  body: z.string(),
+  link: z.string(),
+  read: z.boolean(),
+  createdAt: z.date(),
+  userId: z.string()
 });

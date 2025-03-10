@@ -21,9 +21,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { NavUser } from "./nav-user";
-import { DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { Calendar } from "./ui/calendar";
 import { es } from "date-fns/locale";
 
@@ -62,26 +60,22 @@ export function SidebarLeft({
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="h-16 border-b">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/school">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">ShoolSync</span>
-                  <span className="">Inicio</span>
-                </div>
-              </Link>
+            <SidebarMenuButton size="lg">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <GalleryVerticalEnd className="size-4" />
+              </div>
+              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                SchoolSync
+              </h4>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <DropdownMenuSeparator />
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <div className="mx-auto">
+        <div className="mx-auto my-4">
           <Calendar selected={today} locale={es} />
         </div>
         {data.navMain.map((item) => (

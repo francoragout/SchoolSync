@@ -4,6 +4,7 @@ import {
   Sidebar,
   SidebarHeader,
 } from "@/components/ui/sidebar"
+import { DropdownMenuSeparator } from "./ui/dropdown-menu"
 
 export function SidebarRight({
   ...props
@@ -14,8 +15,9 @@ export function SidebarRight({
       className="sticky hidden lg:flex top-0 h-svh border-l"
       {...props}
     >
-      <SidebarHeader className="h-16 border-b border-sidebar-border">
+      <SidebarHeader className="h-16 border-b">
         <NavUser />
+        <DropdownMenuSeparator />
       </SidebarHeader>
     </Sidebar>
   )

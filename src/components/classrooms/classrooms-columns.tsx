@@ -119,6 +119,16 @@ export const ClassroomsColumns: ColumnDef<Classroom>[] = [
     },
   },
   {
+    accessorKey: "exams_count",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Exámenes" />
+    ),
+    cell: ({ row }) => {
+      const count = row.getValue("_count") as { exams?: number };
+      return count?.exams ?? 0;
+    },
+  },
+  {
     accessorKey: "user",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Preceptor" />
