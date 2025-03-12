@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd } from "lucide-react"
+import { Timer } from "lucide-react"
 import { LoginForm } from "@/components/login-form"
 import Image from "next/image"
 
@@ -17,9 +17,9 @@ export default function LoginPage() {
       <div className="relative z-10 flex w-full max-w-sm flex-col gap-6 bg-white bg-opacity-75 p-6 rounded-lg">
         <a href="#" className="flex items-center gap-2 self-center font-medium">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <GalleryVerticalEnd className="size-4" />
+            <Timer className="size-4" />
           </div>
-          SchoolSync
+          School Sync
         </a>
         <LoginForm />
       </div>

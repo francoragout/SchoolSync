@@ -39,15 +39,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id ?? token.id; // ✅ Mantiene el ID existente si `user.id` es undefined
         token.role = user.role;
       }
-    
+
       if (account?.provider === "google") {
         token.name = profile?.name ?? token.name;
         token.image = profile?.picture ?? token.image;
       }
-    
+
       return token;
     },
-    
 
     // session() se utiliza para agregar la información del token a la sesión del usuario,
     // lo que hace que esté disponible en el cliente.
@@ -56,11 +55,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id ?? ""; // ✅ Evita el error TypeScript asignando un valor por defecto
         session.user.role = token.role;
         session.user.name = token.name;
-        session.user.image = token.image ?? session.user.image;;
+        session.user.image = token.image ?? session.user.image;
       }
       return session;
-    }
-    
+    },
   },
   events: {
     // El evento linkAccount se dispara cuando una cuenta (proveedor OAuth: GitHub, Google, Facebook, etc.)  se vincula a un usuario existente en tu base de datos.
@@ -81,6 +79,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             name: googleProfile.name,
           },
         });
+
+        const student = await prisma.userOnStudent.findFirst({
+          where: { userId: user.id },
+          include: { student: true },
+        });
+
+        const admins = await prisma.user.findMany({
+          where: { role: { in: ["ADMIN"] } },
+        });
+
+        for (const admin of admins) {
+          const userRole = user.role;
+          let link = "";
+
+          if (userRole === "ADMIN") {
+            link = "/school/admins";
+          } else if (userRole === "PRECEPTOR") {
+            link = `/school/preceptors/`;
+          } else if (userRole === "TUTOR") {
+            link = `/school/classrooms/${student?.student.classroomId}/students/${student?.studentId}/tutors`;
+          }
+          await prisma.notification.create({
+            data: {
+              userId: admin.id,
+              title: "Nuevo Usuario",
+              body: `El usuario ${user.email} a vinculado su cuenta de Google`,
+              link: link, // Corrected line
+            },
+          });
+        }
       }
     },
   },

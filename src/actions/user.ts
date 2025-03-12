@@ -40,7 +40,10 @@ export async function CreateUser(values: z.infer<typeof UserSchema>) {
   }
 }
 
-export async function CreateUserOnStudent(values: z.infer<typeof UserSchema>, studentId: string) {
+export async function CreateUserOnStudent(
+  values: z.infer<typeof UserSchema>,
+  studentId: string
+) {
   try {
     const response = await fetch(`${URL}/api/users/student`, {
       method: "POST",
@@ -87,6 +90,10 @@ export async function UpdateUser(
       return { success: false, status: "exists", message: data.message };
     }
 
+    if (response.status === 409) {
+      return { success: false, status: "update", message: data.message };
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Failed to update user: ${errorText}`);
@@ -115,6 +122,12 @@ export async function DeleteUsers(ids: string[], pathname: string) {
       body: JSON.stringify({ ids }),
     });
 
+    const data = await response.json();
+
+    if (response.status === 409) {
+      return { success: false, status: "unique", message: data.message };
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Failed to delete users: ${errorText}`);
@@ -135,7 +148,11 @@ export async function DeleteUsers(ids: string[], pathname: string) {
   }
 }
 
-export async function DeleteUserOnStudent(ids: string[], studentId: string, pathname: string) {
+export async function DeleteUserOnStudent(
+  ids: string[],
+  studentId: string,
+  pathname: string
+) {
   try {
     const response = await fetch(`${URL}/api/users/student`, {
       method: "DELETE",

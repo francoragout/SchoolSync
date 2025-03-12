@@ -8,6 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { BellIcon, EyeIcon } from "lucide-react";
@@ -70,22 +76,31 @@ export default function Notifications({
           <BellIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
           <Badge className="absolute top-0 right-[-0.3rem] inline-flex items-center justify-center h-4 w-4 text-xs font-bold leading-none rounded-full ">
-            <span className="my-auto">{notReadNotifications.length}</span>
+            <span>{notReadNotifications.length}</span>
           </Badge>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex justify-between items-center pe-1">
           <DropdownMenuLabel>Notificaciones</DropdownMenuLabel>
-          <Button
-            size="sm"
-            className="h-6 rounded-full border-primary"
-            onClick={handleMarkAsRead}
-          >
-            {(isPending && (
-              <Icons.spinner className="h-4 w-4 animate-spin" />
-            )) || <EyeIcon className="h-4 w-4" />}
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  className="h-6 rounded-full border-primary"
+                  onClick={handleMarkAsRead}
+                >
+                  {(isPending && (
+                    <Icons.spinner className="h-4 w-4 animate-spin" />
+                  )) || <EyeIcon className="h-4 w-4" />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Marcar como leídas</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <DropdownMenuSeparator />
         <ScrollArea className="flex h-96">

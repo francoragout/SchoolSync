@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronRight, GalleryVerticalEnd } from "lucide-react";
+import { ChevronRight, Timer } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -60,24 +60,28 @@ export function SidebarLeft({
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="h-16 border-b">
+      <SidebarHeader className="border-b">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg">
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <GalleryVerticalEnd className="size-4" />
+              <div className="text-xl flex space-x-2 items-center">
+                <Timer />
+                <span>School Sync</span>
               </div>
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                SchoolSync
-              </h4>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <div className="mx-auto my-4">
-          <Calendar selected={today} locale={es} />
-        </div>
+        <SidebarGroup className="px-0">
+          <SidebarGroupContent>
+            <Calendar
+              locale={es}
+              selected={today}
+              className="[&_[role=gridcell]]:w-[33px]"
+            />
+          </SidebarGroupContent>
+        </SidebarGroup>
         {data.navMain.map((item) => (
           <Collapsible
             key={item.title}

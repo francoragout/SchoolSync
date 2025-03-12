@@ -8,14 +8,24 @@ const URL = process.env.API_URL;
 
 type Classroom = z.infer<typeof ClassroomSchema>;
 
-async function GetClassrooms(): Promise<Classroom[]> {
-  const data = await fetch(`${URL}/api/classrooms`, {
-    cache: "no-store",
-  });
+async function GetClassrooms(
+  role: string,
+  userId: string
+): Promise<Classroom[]> {
 
-  const classrooms = await data.json();
+  let data = null;
 
-  return classrooms.map((classroom: Classroom) => {
+  if (role === "ADMIN") {
+    data = await fetch(`${URL}/api/classrooms`, {
+      cache: "no-store",
+    }).then((res) => res.json());
+  } else {
+    data = await fetch(`${URL}/api/classrooms/user/${userId}`, {
+      cache: "no-store",
+    }).then((res) => res.json());
+  }
+
+  return data.map((classroom: Classroom) => {
     if (classroom.user && classroom.user.createdAt) {
       classroom.user.createdAt = new Date(classroom.user.createdAt);
     }
@@ -24,9 +34,10 @@ async function GetClassrooms(): Promise<Classroom[]> {
 }
 
 export default async function ClassroomsPage() {
-  const data = await GetClassrooms();
   const session = await auth();
+  const userId = session?.user?.id as string;
   const role = session?.user?.role as string;
+  const data = await GetClassrooms(role, userId);
   return (
     <ClassroomsTable columns={ClassroomsColumns} data={data} role={role} />
   );

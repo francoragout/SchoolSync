@@ -8,11 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import Notifications from "@/components/notifications";
 import { SessionProvider } from "next-auth/react";
 import { SidebarLeft } from "@/components/home/sidebar-left";
-import { SidebarRight } from "@/components/home/sidebar-right";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { z } from "zod";
 import { NotificationSchema } from "@/lib/zod";
+import { SidebarRight } from "@/components/sidebar-right";
 
 const URL = process.env.API_URL;
 
