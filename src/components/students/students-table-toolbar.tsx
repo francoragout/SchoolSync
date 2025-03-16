@@ -189,7 +189,7 @@ export function StudentsTableToolbar<TData>({
                 </span>
 
                 <span className="flex flex-col">
-                  Items seleccionados:
+                  Seleccionados:
                   {table.getSelectedRowModel().rows.map((row) => (
                     <span key={row.id} className="text-foreground">
                       {

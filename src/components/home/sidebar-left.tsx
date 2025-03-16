@@ -31,7 +31,7 @@ const data = {
       title: "Institución",
       items: [
         {
-          title: "Aulas",
+          title: "Alumnos",
           url: "/students",
         },
       ],

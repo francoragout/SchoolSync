@@ -10,7 +10,7 @@ type Student = z.infer<typeof StudentSchema>;
 type Attendance = z.infer<typeof AttendanceSchema>;
 
 async function GetStudents(userId: string): Promise<Student[]> {
-  const response = await fetch(`${URL}/api/users/user/${userId}`, {
+  const response = await fetch(`${URL}/api/students/user/${userId}`, {
     cache: "no-store",
   });
 
